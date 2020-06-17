@@ -1,7 +1,7 @@
 "use strict";
 
 
-const typeEnv =global. process. env. TYPE_ENV; 
+const typeEnv = global. process. env. TYPE_ENV;
 
 
 
@@ -16,7 +16,7 @@ const obj = {
 
 const handler = () => {
 
-  if (typeEnv == "docker") {
+  if (typeEnv === "docker") {
     return obj;
   }
 
