@@ -36,7 +36,7 @@ const bot = new Telegraf (global. process. env. tokenParkinsonBot);
 
 
 
-if (nodeEnv == "development") {
+if (nodeEnv === "development") {
   bot. use (Telegraf. log ());
 //  bot. use ((ctx, next) => { /*for (let i in ctx)*/ console. log (Object (ctx)); next ();});
 }

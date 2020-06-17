@@ -1,0 +1,4 @@
+verification-bot-api/node_modules
+.env
+certificates
+.idea/

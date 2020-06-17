@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t parkinson-bot-api .
+docker build -t verification-bot-api .
