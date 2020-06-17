@@ -1,7 +1,7 @@
 "use strict";
 
 
-const typeEnv = global. process. env. TYPE_ENV;
+const typeEnv = global.process.env.TYPE_ENV;
 
 
 

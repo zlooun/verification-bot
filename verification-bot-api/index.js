@@ -31,7 +31,7 @@ global.listAnswer = listAnswer();
 const session = new telegrafSessionRedis(global.configs.session());
 
 
-const bot = new Telegraf (global.process.env.tokenParkinsonBot);
+const bot = new Telegraf(global.process.env.tokenParkinsonBot);
 
 
 
