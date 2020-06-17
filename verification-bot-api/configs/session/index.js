@@ -8,7 +8,7 @@ const typeEnv = global.process.env.TYPE_ENV;
 
 const obj = {
   "store": {
-    "host": "parkinson-bot-redis",
+    "host": "verification-bot-redis",
     "port": 6379
   }
 };

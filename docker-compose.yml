@@ -7,8 +7,8 @@ services:
 
   verification-bot-api:
     depends_on:
-      - parkinson-bot-mongo
-      - parkinson-bot-redis
+      - verification-bot-redis
+      - verification-bot-mongo
     image: verification-bot-api
     container_name: verification-bot-api
     restart: unless-stopped
@@ -23,22 +23,22 @@ services:
       - verification-bot-api-proxy
 
 
-  parkinson-bot-redis:
+  verification-bot-redis:
     image: redis
-    container_name: parkinson-bot-redis
+    container_name: verification-bot-redis
     restart: unless-stopped
     ports:
       - 127.0.0.212:6379:6379
     volumes:
-      - /databases/redis/parkinson-bot:/data
+      - /databases/redis/verification-bot:/data
     networks:
       - verification-bot-api-proxy
       - verification-bot-api
 
 
-  parkinson-bot-mongo:
+  verification-bot-mongo:
     image: mongo
-    container_name: parkinson-bot-mongo
+    container_name: verification-bot-mongo
     restart: unless-stopped
 #    environment:
 #      - MONGO_INITDB_ROOT_USERNAME=****
@@ -46,7 +46,7 @@ services:
     ports:
       - 127.0.0.212:27017:27017
     volumes:
-      - /databases/mongo/parkinson-bot:/data/db
+      - /databases/mongo/verification-bot:/data/db
     networks:
       - verification-bot-api-proxy
       - verification-bot-api
