@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+
+  parkinson-bot-api-proxy:
+    image: nginx
+    container_name: parkinson-bot-api-proxy
+    restart: unless-stopped
+    networks:
+      - parkinson-bot-api-proxy
+
+
+networks:
+  parkinson-bot-api-proxy:
+    name: parkinson-bot-api-proxy

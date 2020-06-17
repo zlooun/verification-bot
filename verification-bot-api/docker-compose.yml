@@ -1,0 +1,60 @@
+version: "3.5"
+
+
+
+
+services:
+
+  parkinson-bot-api:
+    depends_on:
+      - parkinson-bot-mongo
+      - parkinson-bot-redis
+    image: parkinson-bot-api
+    container_name: parkinson-bot-api
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:8080:3000
+      - 127.0.0.212:8081:4000
+    volumes:
+      - /data/static/parkinson-bot-api:/www/parkinson-bot-api/static
+      - /data/logs/parkinson-bot-api:/www/parkinson-bot-api/logs
+    networks:
+      - parkinson-bot-api
+      - parkinson-bot-api-proxy
+
+
+  parkinson-bot-redis:
+    image: redis
+    container_name: parkinson-bot-redis
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:6379:6379
+    volumes:
+      - /databases/redis/parkinson-bot:/data
+    networks:
+      - parkinson-bot-api-proxy
+      - parkinson-bot-api
+
+
+  parkinson-bot-mongo:
+    image: mongo
+    container_name: parkinson-bot-mongo
+    restart: unless-stopped
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=****
+#      - MONGO_INITDB_ROOT_PASSWORD=****
+    ports:
+      - 127.0.0.212:27017:27017
+    volumes:
+      - /databases/mongo/parkinson-bot:/data/db
+    networks:
+      - parkinson-bot-api-proxy
+      - parkinson-bot-api
+
+
+networks:
+  parkinson-bot-api:
+    driver: bridge
+  parkinson-bot-api-proxy:
+    external:
+      name: parkinson-bot-api-proxy
