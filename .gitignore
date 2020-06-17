@@ -1,4 +1,5 @@
 verification-bot-api/node_modules
+verification-bot-express/node_modules
 .env
 certificates
 .idea/

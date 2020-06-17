@@ -5,6 +5,23 @@ version: "3.5"
 
 services:
 
+  verification-bot-express:
+    depends_on:
+      - verification-bot-redis
+      - verification-bot-mongo
+    image: verification-bot-express
+    container_name: verification-bot-express
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:8081:3000
+    volumes:
+      - /data/static/verification-bot-express:/www/verification-bot-express/static
+      - /data/logs/verification-bot-express:/www/verification-bot-express/logs
+    networks:
+      - verification-bot
+      - verification-bot-api-proxy
+
+
   verification-bot-api:
     depends_on:
       - verification-bot-redis
@@ -14,12 +31,11 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.212:8080:3000
-      - 127.0.0.212:8081:4000
     volumes:
       - /data/static/verification-bot-api:/www/verification-bot-api/static
       - /data/logs/verification-bot-api:/www/verification-bot-api/logs
     networks:
-      - verification-bot-api
+      - verification-bot
       - verification-bot-api-proxy
 
 
@@ -33,7 +49,7 @@ services:
       - /databases/redis/verification-bot:/data
     networks:
       - verification-bot-api-proxy
-      - verification-bot-api
+      - verification-bot
 
 
   verification-bot-mongo:
@@ -49,11 +65,11 @@ services:
       - /databases/mongo/verification-bot:/data/db
     networks:
       - verification-bot-api-proxy
-      - verification-bot-api
+      - verification-bot
 
 
 networks:
-  verification-bot-api:
+  verification-bot:
     driver: bridge
   verification-bot-api-proxy:
     external:

@@ -1,0 +1,8 @@
+{
+    "port": 5000,
+    "mongoUri": "mongodb+srv://docapi_company:docapipassword@cluster0-huokf.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret": "weter",
+    "baseUrl": "http:/localhost:5000",
+//    "cors": require ("./cors") (),
+//    "connectInternal": require ("./connectInternal") ()
+}

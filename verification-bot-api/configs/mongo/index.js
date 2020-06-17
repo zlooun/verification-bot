@@ -10,7 +10,7 @@ const defaulthost = "mongodb://verification-bot-mongo:27017/data";
 
 const handler = () => {
 
-  if (typeEnv == "docker") {
+  if (typeEnv === "docker") {
     return defaulthost;
   }
 
