@@ -42,7 +42,7 @@ const bot = new Telegraf(global.process.env.tokenParkinsonBot);
 //winston.info(`${log} - - ${Telegraf.log}`);
 
 if (nodeEnv === "development") {
-  bot.use(Telegraf.log());
+  //bot.use(Telegraf.log());
 //  bot. use ((ctx, next) => { /*for (let i in ctx)*/ console. log (Object (ctx)); next ();});
 }
 
@@ -56,10 +56,6 @@ bot.catch((err, ctx) => console.log(err));
 bot.use((ctx, next) => {
 
   global.routes.slash(ctx, next);
-
-  if (!ctx.from.is_bot) {
-    return;
-  }
 
 });
 

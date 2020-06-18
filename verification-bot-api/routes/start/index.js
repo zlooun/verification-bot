@@ -10,7 +10,6 @@ const handler = (ctx) => {
   const session = ctx.session;
 
 
-
   if (session[from. id]) {
     global.listAnswer.existUser(from, (answer) => ctx.reply(answer));
     return;

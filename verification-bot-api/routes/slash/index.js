@@ -5,7 +5,7 @@
 
 const handler = (ctx, next) => {
 
-  if (ctx.session[ctx. from. id]) {
+  if (ctx.session[ctx.from.id]) {
     next();
     return;
   }
@@ -25,6 +25,7 @@ const handler = (ctx, next) => {
       return;
     }
 
+    console.log(123);
 
     global.handler.saveUser(ctx.from, (err, data) => {
 
