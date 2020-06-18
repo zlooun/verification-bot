@@ -6,33 +6,29 @@
 const handler = (ctx, from) => {
 
   const findObj = {
-    "idUserTelegram": from. id
+    "idUserTelegram": from.id
   };
 
 
-  global. mongoModels. User. findOne (findObj, (err, doc) => {
+  global.mongoModels.User.findOne(findObj, (err, doc) => {
 
     if (err) {
-      console. log (err);
-      return undefined;
+      console.log(err);
+      return;
     }
-
 
     if (!doc) {
-      console. log ("notExist");
-      return undefined;
+      console.log("notExist");
+      return;
     }
 
+    ctx.session[from.id] = doc;
 
-    ctx. session [from. id] = doc;
-    return undefined;
   });
 
-
-  return undefined;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

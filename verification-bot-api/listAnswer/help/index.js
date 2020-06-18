@@ -5,18 +5,18 @@
 
 const handler = (from, callback) => {
 
-  const str = `${ from. first_name } ${ from. last_name }, команды ниже помогут тебе лучше понять мою работу\n
+  const str = `${ from.first_name } ${ from.last_name }, команды ниже помогут тебе лучше понять мою работу\n
   /help помощь\n
   /info описание\n
   /settings настройки\n
   /challenge тест`;
 
 
-  callback (str);
-  return undefined;
+  callback(str);
+
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

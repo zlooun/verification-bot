@@ -3,7 +3,7 @@
 
 
 
-const Schema = require ("mongoose"). Schema;
+const Schema = require("mongoose").Schema;
 
 
 
@@ -22,4 +22,4 @@ const obj = new Schema ({
 
 
 
-module. exports = () => obj;
+module.exports = obj;

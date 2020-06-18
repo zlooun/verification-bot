@@ -3,3 +3,4 @@ verification-bot-express/node_modules
 .env
 certificates
 .idea/
+./logs

@@ -1,6 +1,8 @@
 "use strict";
 
 
+
+
 const typeEnv = global.process.env.TYPE_ENV;
 
 
@@ -20,12 +22,11 @@ const handler = () => {
     return obj;
   }
 
-
-  obj. store. host = "127.0.0.212";
+  obj.store.host = "127.0.0.212";
   return obj;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

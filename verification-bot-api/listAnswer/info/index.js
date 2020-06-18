@@ -20,12 +20,11 @@ const handler = (from, callback) => {
 Также просим вас обратить внимание, что на момент участия в нашем опросе вы должны быть не младше 18 лет.
   `;
 
-
   callback (str);
-  return undefined;
+
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

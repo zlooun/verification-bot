@@ -1,27 +1,27 @@
 "use strict";
 
 
+
+
 const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
-
-
 const handler = (from, callback) => {
 
-  const createDate = Date. now ();
-  const uuid = uuidV1 ();
-  const salt = crypto. createHash ("sha512"). update (from. id + uuid + createDate + Math. random ()). digest ("hex");
+  const createDate = Date.now();
+  const uuid = uuidV1();
+  const salt = crypto.createHash("sha512").update(from. id + uuid + createDate + Math. random ()).digest("hex");
 
 
   const saveObj = {
-    "idUserTelegram": from. id,
-    "idChatTelegram": from. id,
-    "name": from. first_name,
-    "lastname": from. last_name,
-    "login": from. username,
-    "lang": from. language_code,
-    "isBot": from. is_bot,
+    "idUserTelegram": from.id,
+    "idChatTelegram": from.id,
+    "name": from.first_name,
+    "lastname": from.last_name,
+    "login": from.username,
+    "lang": from.language_code,
+    "isBot": from.is_bot,
     "lock": false,
     "createDate": createDate,
     "uuid": uuid,
@@ -29,33 +29,29 @@ const handler = (from, callback) => {
   };
 
 
-  const user = new global. mongoModels. User (saveObj);
+  const user = new global.mongoModels.User(saveObj);
 
 
-  user. save ((err, doc) => {
+  user.save((err, doc) => {
 
     if (err) {
-      console. log (err);
-      callback (err, null);
-      return undefined;
+      console.log(err);
+      callback(err, null);
+      return;
     }
-
 
     if (!doc) {
-      callback (null, "notExist");
-      return undefined;
+      callback(null, "notExist");
+      return;
     }
 
+    callback(null, doc);
 
-    callback (null, doc);
-    return undefined;
   });
 
-
-  return undefined;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

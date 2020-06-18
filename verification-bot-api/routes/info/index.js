@@ -5,19 +5,11 @@
 
 const handler = (ctx) => {
 
-  const from = ctx. from;
+  global.listAnswer.info(ctx.from, (answer) => ctx.reply(answer));
 
-
-  global. listAnswer. info (from, (answer) => {
-    ctx. reply (answer);
-    return undefined;
-  });
-
-
-  return undefined;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

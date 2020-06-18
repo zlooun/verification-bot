@@ -14,11 +14,10 @@ const handler = () => {
     return defaulthost;
   }
 
-
   return localhost;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

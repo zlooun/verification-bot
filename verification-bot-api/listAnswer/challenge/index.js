@@ -7,12 +7,11 @@ const handler = (from, callback) => {
 
   const str = `Данный раздел в разработке`;
 
+  callback(str);
 
-  callback (str);
-  return undefined;
 };
 
 
 
 
-module. exports = () => handler;
+module.exports = handler;

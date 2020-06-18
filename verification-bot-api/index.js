@@ -2,30 +2,34 @@
 
 
 //initialize
-require ("./.env")()();
+require ("./.env")();
 
 
+const log = `[BOT][SYSTEM] - - [${__dirname.slice(49)}]`;
 const nodeEnv = global.process.env.NODE_ENV;
 
 
 const Telegraf = require("telegraf");
 const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
+const winston = require("winston");
 
 
-const configs = require("./configs")();
-const handler = require("./handler")();
+const configs = require("./configs");
+const handler = require("./handler");
 const mongoModels = require("./mongoModels");
-const routes = require("./routes")();
-const listAnswer = require("./listAnswer")();
+const routes = require("./routes");
+const listAnswer = require("./listAnswer");
 
 
 global.configs = configs();
 global.handler = handler();
-global.mongoModels = mongoModels();
+global.mongoModels = mongoModels;
 global.routes = routes();
 global.listAnswer = listAnswer();
+global.winston = winston; 
 
+global.winston.configure(global.configs.winston());
 
 
 const session = new telegrafSessionRedis(global.configs.session());
@@ -34,11 +38,10 @@ const session = new telegrafSessionRedis(global.configs.session());
 const bot = new Telegraf(global.process.env.tokenParkinsonBot);
 
 
-
+//winston.info(`${log} - - ${Telegraf.log}`);
 
 if (nodeEnv === "development") {
-
-  bot. use (Telegraf. log ());
+  bot.use(Telegraf.log());
 //  bot. use ((ctx, next) => { /*for (let i in ctx)*/ console. log (Object (ctx)); next ();});
 }
 
@@ -46,61 +49,31 @@ if (nodeEnv === "development") {
 bot.use(session);
 
 
-bot.catch((err, ctx) => {
-  console. log (err);
-//  console. log (ctx);
-});
+bot.catch((err, ctx) => console.log(err));
 
 
 bot.use((ctx, next) => {
 
   global.routes.slash(ctx, next);
 
-
   if (!ctx.from.is_bot) {
     return;
   }
 
-  return;
 });
 
 
-bot.start((ctx) => {
-  console.log(ctx.session);
-  console.log(ctx.updateType);
-  global.routes.start(ctx);
-//  console. log (ctx. updateSubTypes);
-//  console. log (ctx. from);
-//  console. log (ctx. chat);
-//  ctx. getChat (). then ( res => console. log (res));
+bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next());
 
+bot.start((ctx) => global.routes.start(ctx));
 
-//  for (let i in ctx) console. log (i);
-});
+bot.help((ctx) => global.routes.help(ctx));
 
+bot.settings((ctx) => global.routes.settings(ctx));
 
-bot.help((ctx) => {
-  global.routes.help(ctx);
-  return;
-});
+bot.command("info", (ctx) => global.routes.info(ctx));
 
-
-bot.settings((ctx) => {
-  global.routes.settings(ctx);
-  return;
-});
-
-
-bot.command("info", (ctx) => {
-  global.routes.info(ctx);
-  return;
-});
-
-
-bot.command("challenge", (ctx) => {
-  global.routes.challenge(ctx);
-  return;
-});
+bot.command("challenge", (ctx) => global.routes.challenge(ctx));
 
 
 mongoose.connect(global.configs.mongo(), { "useNewUrlParser": true, "useFindAndModify": false, "useUnifiedTopology": true });
@@ -113,6 +86,6 @@ mongoose.connection.on("open", (err) => {
 
 
   bot.launch();
-  console.log("Connect to db and start bot success");
-  return;
+  winston.info(`${log} - - Соединение с бд и старт бота выполнены`)
+
 });
