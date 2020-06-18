@@ -7,7 +7,8 @@ const handler = () => {
   return {
     "session": require ("./session"),
     "mongo": require ("./mongo"),
-    "winston": require ("./winston")
+    "winston": require ("./winston"),
+    "redis": require ("./redis")
   };
 };
 

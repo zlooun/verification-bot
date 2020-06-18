@@ -39,8 +39,6 @@ const session = new telegrafSessionRedis(global.configs.session());
 const bot = new Telegraf(global.process.env.tokenParkinsonBot);
 
 
-redis.on("message", )
-
 //winston.info(`${log} - - ${Telegraf.log}`);
 
 if (nodeEnv === "development") {
