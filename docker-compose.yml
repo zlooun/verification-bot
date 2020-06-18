@@ -15,8 +15,7 @@ services:
     ports:
       - 127.0.0.212:8081:3000
     volumes:
-      - /data/static/verification-bot-express:/www/verification-bot-express/static
-      - /data/logs/verification-bot-express:/www/verification-bot-express/logs
+      - D:/Job/Wind/verification-bot/logs:/www/verification-bot-express/logs
     networks:
       - verification-bot
       - verification-bot-api-proxy
@@ -32,8 +31,7 @@ services:
     ports:
       - 127.0.0.212:8080:3000
     volumes:
-      - /data/static/verification-bot-api:/www/verification-bot-api/static
-      - /data/logs/verification-bot-api:/www/verification-bot-api/logs
+      - D:/Job/Wind/verification-bot/logs:/www/verification-bot-api/logs
     networks:
       - verification-bot
       - verification-bot-api-proxy
@@ -46,7 +44,7 @@ services:
     ports:
       - 127.0.0.212:6379:6379
     volumes:
-      - /databases/redis/verification-bot:/data
+      - D:/Job/Wind/verification-bot/databases/redis:/data
     networks:
       - verification-bot-api-proxy
       - verification-bot
@@ -62,7 +60,7 @@ services:
     ports:
       - 127.0.0.212:27017:27017
     volumes:
-      - /databases/mongo/verification-bot:/data/db
+      - D:/Job/Wind/verification-bot/databases/mongo:/data/db
     networks:
       - verification-bot-api-proxy
       - verification-bot

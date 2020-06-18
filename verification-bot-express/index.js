@@ -1,10 +1,15 @@
 "use strict";
 
 
+
+
+const log = `[EXPRESS][SYSTEM] - - [${__dirname.slice(49)}]`;
+
 const app = require('express')();
 const mongoose = require('mongoose');
 const Redis = require('ioredis');
 const bodyParser = require('body-parser');
+const winston = require("winston");
 
 
 //const mongoModels = require('./mongoModels');
@@ -15,9 +20,10 @@ const routes = require('./routes');
 //global.listStatus = listStatus();
 global.configs = configs();
 //global.mongoModels = mongoModels();
+global.winston = winston; 
 
 global.redis = new Redis(global.configs.connectInternal().redis()[0].to());
-
+global.winston.configure(global.configs.winston());
 
 
 
@@ -42,7 +48,7 @@ mongoose.connection.on("open", (err) => {
     return;
   }
 
-  app.listen(global.configs.express().port, () => console. log("start on port " + global.configs.express().port));
+  app.listen(global.configs.express().port, () => winston.info(`${log} - - "start on port " + global.configs.express().port)`));
   return;
   
 });

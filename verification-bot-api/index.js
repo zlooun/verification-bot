@@ -13,6 +13,7 @@ const Telegraf = require("telegraf");
 const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
 const winston = require("winston");
+const Redis = require("ioredis");
 
 
 const configs = require("./configs");
@@ -31,12 +32,14 @@ global.winston = winston;
 
 global.winston.configure(global.configs.winston());
 
-
+global.redis = new Redis(global.configs.redis()[0].to());
 const session = new telegrafSessionRedis(global.configs.session());
 
 
 const bot = new Telegraf(global.process.env.tokenParkinsonBot);
 
+
+redis.on("message", )
 
 //winston.info(`${log} - - ${Telegraf.log}`);
 
@@ -61,7 +64,6 @@ bot.use((ctx, next) => {
   }
 
 });
-
 
 bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next());
 
