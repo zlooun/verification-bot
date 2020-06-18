@@ -25,7 +25,6 @@ const handler = (ctx, next) => {
       return;
     }
 
-    console.log(123);
 
     global.handler.saveUser(ctx.from, (err, data) => {
 
