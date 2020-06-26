@@ -5,43 +5,44 @@
 
 const handler = (ctx, next) => {
 
-  if (ctx.session[ctx.from.id]) {
-    next();
-    return;
-  }
+  global.session.get(ctx.sessionKey).then((session) => {
 
-  
-  global.handler.checkExistUser(ctx.from, (err, data) => {
-
-    if (err) {
-      ctx.reply("error stac trays");
-      return;
-    }
-
-
-    if (data !== "notExist") {
-      ctx.session[ctx.from.id] = data;
+    if (Object.keys(session).length) {
       next();
       return;
     }
 
-
-    global.handler.saveUser(ctx.from, (err, data) => {
+    global.handler.checkExistUser(ctx.from, (err, data) => {
 
       if (err) {
-        console.log(err);
+        ctx.reply("error stac trays");
         return;
       }
-
-      if (!data) {
-        console.log("notExist");
+  
+      if (data !== "notExist") {
+        global.session.set(ctx.sessionKey, data).then(() => next());
+        //next();
         return;
       }
-
-      next();
+  
+      global.handler.saveUser(ctx.from, (err, data) => {
+  
+        if (err) {
+          console.log(err);
+          return;
+        }
+  
+        if (!data) {
+          console.log("notExist");
+          return;
+        }
+  
+        next();
+      });
+  
     });
 
-  });
+  })
 
 };
 

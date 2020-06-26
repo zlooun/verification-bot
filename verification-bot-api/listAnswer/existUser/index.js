@@ -3,11 +3,15 @@
 
 
 
-const handler = (from, callback) => {
+const handler = (from) => {
 
-  const str = `Привет ${ from.first_name} ${ from.last_name }! А мы с тобой уже знакомы.`;
+  return new Promise((resolve, reject) => {
 
-  callback (str);
+    const str = `Привет ${ from.first_name} ${ from.last_name }! А мы с тобой уже знакомы.`;
+
+    resolve(str)
+
+  })
 
 };
 

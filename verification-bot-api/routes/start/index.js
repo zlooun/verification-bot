@@ -7,17 +7,17 @@
 const handler = (ctx) => {
 
   const from = ctx.from;
-  const session = ctx.session;
 
+  global.session.get(ctx.sessionKey).then((session) => {
 
-  if (session[from. id]) {
-    global.listAnswer.existUser(from, (answer) => ctx.reply(answer));
-    return;
-  }
+    if (Object.keys(session).length) {
+      global.listAnswer.existUser(from).then((answer) => ctx.reply(answer));
+      return;
+    }
 
-
-  global.handler.saveUserInSession(ctx, from);
-  global.listAnswer.notExistUser(from, (answer) => ctx.reply(answer));
+    global.handler.saveUserInSession(ctx, from);
+    global.listAnswer.notExistUser(from).then((answer) => ctx.reply(answer));
+  })
 
 };
 

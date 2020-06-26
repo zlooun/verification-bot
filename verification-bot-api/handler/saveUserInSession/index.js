@@ -22,7 +22,8 @@ const handler = (ctx, from) => {
       return;
     }
 
-    ctx.session[from.id] = doc;
+    global.session.set(ctx.sessionKey, doc);
+    //ctx.session[from.id] = doc;
 
   });
 

@@ -21,6 +21,7 @@ const handler = require("./handler");
 const mongoModels = require("./mongoModels");
 const routes = require("./routes");
 const listAnswer = require("./listAnswer");
+const session = require("./session");
 
 
 global.configs = configs();
@@ -28,12 +29,13 @@ global.handler = handler();
 global.mongoModels = mongoModels;
 global.routes = routes();
 global.listAnswer = listAnswer();
+global.session = session();
 global.winston = winston; 
 
 global.winston.configure(global.configs.winston());
 
 global.redis = new Redis(global.configs.redis()[0].to());
-const session = new telegrafSessionRedis(global.configs.session());
+//const session = new telegrafSessionRedis(global.configs.session());
 
 
 const bot = new Telegraf(global.process.env.tokenParkinsonBot);
@@ -47,7 +49,10 @@ if (nodeEnv === "development") {
 }
 
 
-bot.use(session);
+bot.use((ctx, next) => {
+  ctx.sessionKey = ctx.from && ctx.chat && `${ctx.from.id}:${ctx.chat.id}`;
+  next();
+});
 
 
 bot.catch((err, ctx) => console.log(err));
@@ -70,6 +75,10 @@ bot.settings((ctx) => global.routes.settings(ctx));
 bot.command("info", (ctx) => global.routes.info(ctx));
 
 bot.command("challenge", (ctx) => global.routes.challenge(ctx));
+
+bot.command("getSession", (ctx) => global.session.get(ctx.sessionKey).then((session) => {
+  ctx.reply(session);
+}));
 
 
 mongoose.connect(global.configs.mongo(), { "useNewUrlParser": true, "useFindAndModify": false, "useUnifiedTopology": true });
