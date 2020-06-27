@@ -10,7 +10,8 @@ const nodeEnv = global.process.env.NODE_ENV;
 
 
 const Telegraf = require("telegraf");
-const telegrafSessionRedis = require("telegraf-session-redis");
+const tgSession = require('telegraf/session')
+//const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
 const winston = require("winston");
 const Redis = require("ioredis");
@@ -22,6 +23,7 @@ const mongoModels = require("./mongoModels");
 const routes = require("./routes");
 const listAnswer = require("./listAnswer");
 const session = require("./session");
+const stages = require("./stages");
 
 
 global.configs = configs();
@@ -49,36 +51,30 @@ if (nodeEnv === "development") {
 }
 
 
+bot.catch((err) => console.log(err));
+
+
+bot.use(tgSession());
+
+stages(bot);
+
 bot.use((ctx, next) => {
   ctx.sessionKey = ctx.from && ctx.chat && `${ctx.from.id}:${ctx.chat.id}`;
   next();
 });
 
-
-bot.catch((err, ctx) => console.log(err));
-
-
-bot.use((ctx, next) => {
-
-  global.routes.slash(ctx, next);
-
-});
+bot.use((ctx, next) => global.routes.slash(ctx, next));
 
 bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next());
+
 
 bot.start((ctx) => global.routes.start(ctx));
 
 bot.help((ctx) => global.routes.help(ctx));
 
-bot.settings((ctx) => global.routes.settings(ctx));
+bot.command('authorization', (ctx) => ctx.scene.enter('authorization'));
 
-bot.command("info", (ctx) => global.routes.info(ctx));
-
-bot.command("challenge", (ctx) => global.routes.challenge(ctx));
-
-bot.command("getSession", (ctx) => global.session.get(ctx.sessionKey).then((session) => {
-  ctx.reply(session);
-}));
+bot.startPolling();
 
 
 mongoose.connect(global.configs.mongo(), { "useNewUrlParser": true, "useFindAndModify": false, "useUnifiedTopology": true });

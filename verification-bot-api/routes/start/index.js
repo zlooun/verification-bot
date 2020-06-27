@@ -10,12 +10,13 @@ const handler = (ctx) => {
 
   global.session.get(ctx.sessionKey).then((session) => {
 
-    if (Object.keys(session).length) {
+    if (!session.firstTime) {
       global.listAnswer.existUser(from).then((answer) => ctx.reply(answer));
       return;
     }
 
-    global.handler.saveUserInSession(ctx, from);
+    delete session.firstTime;
+    global.session.set(ctx.sessionKey, session);
     global.listAnswer.notExistUser(from).then((answer) => ctx.reply(answer));
   })
 

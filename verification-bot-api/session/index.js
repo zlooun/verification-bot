@@ -5,7 +5,7 @@
 
 const handler = () => {
   return {
-    //"del": require("./del"),
+    "del": require("./del"),
     "get": require("./get"),
     "set": require("./set"),
   };

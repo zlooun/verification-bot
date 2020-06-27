@@ -6,6 +6,7 @@
 const handler = (key) => {
 
   return new Promise((resolve, reject) => {
+
     global.redis.get(key, (err, json) => {
 
       if (err) {
@@ -15,8 +16,11 @@ const handler = (key) => {
       if (json) {
 
         try {
+
           const session = JSON.parse(json)
+
           resolve(session)
+
         } catch (err) {
           reject(err);
         }

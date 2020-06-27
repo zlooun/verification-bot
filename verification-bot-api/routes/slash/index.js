@@ -21,24 +21,10 @@ const handler = (ctx, next) => {
   
       if (data !== "notExist") {
         global.session.set(ctx.sessionKey, data).then(() => next());
-        //next();
         return;
       }
   
-      global.handler.saveUser(ctx.from, (err, data) => {
-  
-        if (err) {
-          console.log(err);
-          return;
-        }
-  
-        if (!data) {
-          console.log("notExist");
-          return;
-        }
-  
-        next();
-      });
+      global.handler.saveUser(ctx, next);
   
     });
 

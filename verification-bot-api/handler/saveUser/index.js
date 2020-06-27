@@ -7,8 +7,9 @@ const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
-const handler = (from, callback) => {
+const handler = (ctx, next) => {
 
+  const from = ctx.from;
   const createDate = Date.now();
   const uuid = uuidV1();
   const salt = crypto.createHash("sha512").update(from. id + uuid + createDate + Math. random ()).digest("hex");
@@ -36,16 +37,16 @@ const handler = (from, callback) => {
 
     if (err) {
       console.log(err);
-      callback(err, null);
       return;
     }
 
     if (!doc) {
-      callback(null, "notExist");
+      console.log("notExist");
       return;
     }
-
-    callback(null, doc);
+    
+    const session = doc.toObject().firstTime = true;
+    global.session.set(ctx.sessionKey, session).then(() => next());
 
   });
 

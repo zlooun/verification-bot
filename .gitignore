@@ -5,3 +5,4 @@ certificates
 .idea/
 logs
 databases
+verification-bot-api/test.js
