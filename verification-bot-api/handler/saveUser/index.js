@@ -17,7 +17,7 @@ const handler = (ctx, next) => {
 
   const saveObj = {
     "idUserTelegram": from.id,
-    "idChatTelegram": from.id,
+    "idChatTelegram": ctx.chat.id,
     "name": from.first_name,
     "lastname": from.last_name,
     "login": from.username,
@@ -26,7 +26,9 @@ const handler = (ctx, next) => {
     "lock": false,
     "createDate": createDate,
     "uuid": uuid,
-    "salt": salt
+    "salt": salt,
+    "isAuthenticated": false,
+    "notifications": false
   };
 
 

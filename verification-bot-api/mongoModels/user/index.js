@@ -21,7 +21,9 @@ const obj = new Schema ({
   "isBot": Boolean,
   "lang": String,
   "type": String,
-  "photo": Object
+  "photo": Object,
+  "isAuthenticated": Boolean,
+  "notifications": Boolean
 });
 
 

@@ -12,7 +12,6 @@ const nodeEnv = global.process.env.NODE_ENV;
 const Telegraf = require("telegraf");
 const Telegram = require("telegraf/telegram");
 const tgSession = require('telegraf/session');
-//const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
 const winston = require("winston");
 const Redis = require("ioredis");
@@ -44,7 +43,6 @@ global.winston.configure(global.configs.winston());
 
 global.redis = new Redis(global.configs.redis()[0].to());
 const sub = new Redis(global.configs.redis()[0].to());
-//const session = new telegrafSessionRedis(global.configs.session());
 
 sub.subscribe("notification", (err, count) => {
 
@@ -59,10 +57,9 @@ sub.subscribe("notification", (err, count) => {
 
 //winston.info(`${log} - - ${Telegraf.log}`);
 
-if (nodeEnv === "development") {
-  //bot.use(Telegraf.log());
-//  bot. use ((ctx, next) => { /*for (let i in ctx)*/ console. log (Object (ctx)); next ();});
-}
+/* if (nodeEnv === "development") {
+  bot.use(Telegraf.log());
+} */
 
 
 bot.catch((err) => console.log(err));
@@ -99,6 +96,7 @@ mongoose.connection.on("open", (err) => {
     return;
   }
 
+  global.handler.setAuthenticated();
 
   bot.launch();
   winston.info(`${log} - - Соединение с бд и старт бота выполнены`);

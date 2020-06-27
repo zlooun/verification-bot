@@ -7,7 +7,8 @@ const handler = () => {
   return {
     "checkExistUser": require("./checkExistUser"),
     "saveUser": require("./saveUser"),
-    "saveUserInSession": require("./saveUserInSession")
+    "saveUserInSession": require("./saveUserInSession"),
+    "setAuthenticated": require("./setAuthenticated")
   };
 };
 
