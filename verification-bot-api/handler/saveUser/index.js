@@ -46,10 +46,6 @@ const handler = (ctx, next) => {
       console.log("notExist");
       return;
     }
-    
-    const session = doc.toObject();
-    session.firstTime = true;
-    global.session.set(ctx.sessionKey, session).then(() => next());
 
   });
 

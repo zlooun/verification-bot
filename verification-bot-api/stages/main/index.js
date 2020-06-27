@@ -4,15 +4,14 @@
 
 
 const Stage = require('telegraf/stage');
-const { leave } = Stage;
 
 
 const handler = () => {
 
   const main = new Stage();
 
-  main.command('cancel', leave());
-  main.register(require("./authorization")(leave));
+  main.command('cancel', Stage.leave());
+  main.register(require("./authorization")());
 
   return main;
 };

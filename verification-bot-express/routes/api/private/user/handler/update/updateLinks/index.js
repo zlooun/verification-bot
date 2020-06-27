@@ -9,8 +9,6 @@ const trim = require ("trim");
 
 const handler = (req, res, idUser) => {
 
-  console.log(123);
-
   let links = req.body.links;
 
   console.log(links);

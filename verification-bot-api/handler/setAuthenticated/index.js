@@ -21,16 +21,19 @@ const handler = () => {
       console.log("Нет аутинтифицированных пользователей.");
       return;
     }
+    global.redis.del("queue")
+      .then(() => {
+        array.forEach((item, index, array) => {
 
-    array.forEach((item, index, array) => {
+        global.session.set(`${item.idUserTelegram}:${item.idChatTelegram}`, item, index == 0 ? true : false);
+        
+        if (item.notifications) {
+          
+          global.redis.hset("queue", item.idUserTelegram, index == 0 ? true : false);
+        
+        }
 
-      global.session.set(`${item.idUserTelegram}:${item.idChatTelegram}`, item, index == 0 ? true : false);
-      
-      if (item.notifications) {
-
-        global.redis.hset("queue", item.idUserTelegram, index == 0 ? true : false);
-      
-      }
+      })
       
     });
 

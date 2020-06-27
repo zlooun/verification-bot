@@ -67,12 +67,12 @@ bot.catch((err) => console.log(err));
 
 bot.use(tgSession());
 
-stages(bot);
-
 bot.use((ctx, next) => {
   ctx.sessionKey = ctx.from && ctx.chat && `${ctx.from.id}:${ctx.chat.id}`;
   next();
 });
+
+stages(bot);
 
 bot.use((ctx, next) => global.routes.slash(ctx, next));
 

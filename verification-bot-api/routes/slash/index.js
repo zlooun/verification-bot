@@ -19,13 +19,18 @@ const handler = (ctx, next) => {
         return;
       }
   
-      if (data !== "notExist") {
-        global.session.set(ctx.sessionKey, data).then(() => next());
+      if (data === "notExist") {
+        global.handler.saveUser(ctx, next);
         return;
       }
   
-      global.handler.saveUser(ctx, next);
-  
+      if (data.isAuthenticated === false) {
+        return;
+      }
+
+      global.session.set(ctx.sessionKey, data)
+      .then(() => next());
+
     });
 
   })
