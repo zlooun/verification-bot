@@ -10,7 +10,7 @@ const nodeEnv = global.process.env.NODE_ENV;
 
 
 const Telegraf = require("telegraf");
-const tgSession = require('telegraf/session')
+const tgSession = require('telegraf/session');
 //const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
 const winston = require("winston");
@@ -87,6 +87,6 @@ mongoose.connection.on("open", (err) => {
 
 
   bot.launch();
-  winston.info(`${log} - - Соединение с бд и старт бота выполнены`)
+  winston.info(`${log} - - Соединение с бд и старт бота выполнены`);
 
 });

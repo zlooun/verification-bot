@@ -12,14 +12,14 @@ const bodyParser = require('body-parser');
 const winston = require("winston");
 
 
-//const mongoModels = require('./mongoModels');
+const mongoModels = require('./mongoModels');
 const configs = require('./configs')();
 const routes = require('./routes');
 
 
 //global.listStatus = listStatus();
 global.configs = configs();
-//global.mongoModels = mongoModels();
+global.mongoModels = mongoModels;
 global.winston = winston; 
 
 global.redis = new Redis(global.configs.connectInternal().redis()[0].to());

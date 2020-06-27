@@ -45,7 +45,8 @@ const handler = (ctx, next) => {
       return;
     }
     
-    const session = doc.toObject().firstTime = true;
+    const session = doc.toObject();
+    session.firstTime = true;
     global.session.set(ctx.sessionKey, session).then(() => next());
 
   });
