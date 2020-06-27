@@ -11,7 +11,7 @@ const handler = (req, res) => {
   let notification = req.body.notification;
 
   if (!notification) {
-    res.send("Notification is empty")
+    res.send("Notification is empty");
   }
 
   res.send("Success");
@@ -21,7 +21,8 @@ const handler = (req, res) => {
 
   saveRequest(notification)
     .then(() => {
-      
+      console.log(JSON.stringify(notification));
+      global.redis.publish("notification", JSON.stringify(notification));
     })
   
 

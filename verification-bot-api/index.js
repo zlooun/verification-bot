@@ -10,6 +10,7 @@ const nodeEnv = global.process.env.NODE_ENV;
 
 
 const Telegraf = require("telegraf");
+const Telegram = require("telegraf/telegram");
 const tgSession = require('telegraf/session');
 //const telegrafSessionRedis = require("telegraf-session-redis");
 const mongoose = require("mongoose");
@@ -24,6 +25,10 @@ const routes = require("./routes");
 const listAnswer = require("./listAnswer");
 const session = require("./session");
 const stages = require("./stages");
+const subscribe = require("./subscribe");
+
+const telegram = new Telegram(global.process.env.tokenVerificationBot);
+const bot = new Telegraf(global.process.env.tokenVerificationBot);
 
 
 global.configs = configs();
@@ -32,16 +37,25 @@ global.mongoModels = mongoModels;
 global.routes = routes();
 global.listAnswer = listAnswer();
 global.session = session();
-global.winston = winston; 
+global.winston = winston;
+global.telegram = telegram;
 
 global.winston.configure(global.configs.winston());
 
 global.redis = new Redis(global.configs.redis()[0].to());
+const sub = new Redis(global.configs.redis()[0].to());
 //const session = new telegrafSessionRedis(global.configs.session());
 
+sub.subscribe("notification", (err, count) => {
 
-const bot = new Telegraf(global.process.env.tokenParkinsonBot);
+  if (err) {
+    console.log(err);
+    return;
+  }
 
+  sub.on("message", subscribe.notification);
+
+});
 
 //winston.info(`${log} - - ${Telegraf.log}`);
 
