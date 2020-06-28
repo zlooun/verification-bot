@@ -13,7 +13,7 @@ const handler = (ctx) => {
     global.session.get(ctx.sessionKey).then((session) => {
 
       if (!Object.keys(session).length) {
-        const str = `Привет ${ from.first_name} ${ from.last_name }! А мы с тобой уже знакомы. Но ты не авторизировался. Введи /help, чтобы посмотреть, что ты можешь сделать.`;
+        const str = `Привет ${ from.first_name} ${ from.last_name }! А мы с тобой уже знакомы. Но ты не авторизировался. Введи /authorization, для того, чтобы это исправить.`;
         resolve(str);
         return;
       }

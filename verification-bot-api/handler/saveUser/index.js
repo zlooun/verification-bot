@@ -7,8 +7,9 @@ const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
-const handler = (ctx) => {
-
+const handler = (ctx, isAuthenticated) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  
   const from = ctx.from;
   const createDate = Date.now();
   const uuid = uuidV1();
@@ -27,7 +28,7 @@ const handler = (ctx) => {
     "createDate": createDate,
     "uuid": uuid,
     "salt": salt,
-    "isAuthenticated": false,
+    "isAuthenticated": isAuthenticated === undefined ? false : true,
     "notifications": false,
   };
 
@@ -38,15 +39,17 @@ const handler = (ctx) => {
   user.save((err, doc) => {
 
     if (err) {
-      console.log(err);
+      winston.info(`${log} - - ${err}.`);
       return;
     }
 
     if (!doc) {
-      console.log("notExist");
+      winston.info(`${log} - - Пользователь не сохранился в бд.`);
       return;
     }
 
+
+    winston.info(`${log} - - Пользователь сохранился в бд.`);
   });
 
 };

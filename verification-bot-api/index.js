@@ -38,16 +38,18 @@ global.listAnswer = listAnswer();
 global.session = session();
 global.winston = winston;
 global.telegram = telegram;
+global.log = log;
 
 global.winston.configure(global.configs.winston());
 
 global.redis = new Redis(global.configs.redis()[0].to());
 const sub = new Redis(global.configs.redis()[0].to());
 
+winston.info(`${log} - - Подписываемся на "notification".`);
 sub.subscribe("notification", (err, count) => {
 
   if (err) {
-    console.log(err);
+    winston.info(`${log} - - ${err}`);
     return;
   }
 
@@ -62,7 +64,7 @@ sub.subscribe("notification", (err, count) => {
 } */
 
 
-bot.catch((err) => console.log(err));
+bot.catch((err) => winston.info(`${log} - - ${err}`));
 
 
 bot.use(tgSession());
@@ -74,22 +76,54 @@ bot.use((ctx, next) => {
 
 bot.use(stage());
 
-bot.start((ctx) => global.routes.start(ctx));
+bot.start((ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Команда /start.`);
+  global.routes.start(ctx);
+});
 
-bot.use((ctx, next) => global.routes.slash(ctx, next));
+bot.use((ctx, next) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Router slash.`);
+  global.routes.slash(ctx, next);
+});
 
-bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next());
+bot.use((ctx, next) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+
+  ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next();
+});
 
 
-bot.help((ctx) => global.routes.help(ctx));
+bot.help((ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Команда /help.`);
+  global.routes.help(ctx);
+});
 
-bot.command('authorization', (ctx) => global.routes.authorization(ctx));
+bot.command('authorization', (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Команда /authorization.`);
+  global.routes.authorization(ctx);
+});
 
-bot.command('turnOff', (ctx) => global.routes.turnOff(ctx));
+bot.command('turnOff', (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Команда /turnOff.`);
+  global.routes.turnOff(ctx);
+});
 
-bot.command('turnOn', (ctx) => global.routes.turnOn(ctx));
+bot.command('turnOn', (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Команда /turnOn.`);
+  global.routes.turnOn(ctx);
+});
 
-bot.on("message", ( {reply} ) => reply("Не известная команда, напишите /help, чтобы посмотреть какими командами вы можете пользоваться."));
+bot.on("message", ( {reply} ) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Неизвестная комнада.`);
+  reply("Неизвестная команда, напишите /help, чтобы посмотреть какими командами вы можете пользоваться.")
+});
 
 bot.startPolling();
 
@@ -102,6 +136,7 @@ mongoose.connection.on("open", (err) => {
     return;
   }
 
+  winston.info(`${log} - - Установка очереди и сессии в redis.`);
   global.handler.setAuthenticated();
 
   bot.launch();
