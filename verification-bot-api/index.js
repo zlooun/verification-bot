@@ -23,7 +23,7 @@ const mongoModels = require("./mongoModels");
 const routes = require("./routes");
 const listAnswer = require("./listAnswer");
 const session = require("./session");
-const stages = require("./stages");
+const stage = require("./stage");
 const subscribe = require("./subscribe");
 
 const telegram = new Telegram(global.process.env.tokenVerificationBot);
@@ -72,7 +72,7 @@ bot.use((ctx, next) => {
   next();
 });
 
-stages(bot);
+bot.use(stage());
 
 bot.start((ctx) => global.routes.start(ctx));
 
@@ -83,11 +83,11 @@ bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не п
 
 bot.help((ctx) => global.routes.help(ctx));
 
-bot.command('authorization', (ctx) => ctx.scene.enter('authorization'));
+bot.command('authorization', (ctx) => global.routes.authorization(ctx));
 
-bot.command('turnOff', (ctx) => ctx.scene.enter('turnOffNotifications'));
+bot.command('turnOff', (ctx) => global.routes.turnOff(ctx));
 
-bot.command('turnOn', (ctx) => ctx.scene.enter('turnOnNotifications'));
+bot.command('turnOn', (ctx) => global.routes.turnOn(ctx));
 
 bot.on("message", ( {reply} ) => reply("Не известная команда, напишите /help, чтобы посмотреть какими командами вы можете пользоваться."));
 

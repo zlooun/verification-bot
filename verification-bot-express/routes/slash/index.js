@@ -5,7 +5,7 @@
 
 const handler = (req, res) => {
 
-  res.send("123");
+  res.sendStatus(403);
 
   return;
 };

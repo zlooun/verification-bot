@@ -7,7 +7,7 @@ const handler = () => {
 
   return new Promise((resolve) => {
 
-    const str = `Вы не авторизованы, чтобы авторизоваться введите /authorization.`;
+    const str = `Вы уже авторизованы.`;
 
     resolve(str)
 

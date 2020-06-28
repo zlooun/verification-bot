@@ -11,7 +11,8 @@ const handler = () => {
     "settings": require("./settings"),
     "info": require("./info"),
     "challenge": require("./challenge"),
-    "notAuthenticated": require("./notAuthenticated")
+    "notAuthenticated": require("./notAuthenticated"),
+    "isAuthenticated": require("./isAuthenticated")
   };
 };
 

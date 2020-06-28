@@ -7,8 +7,7 @@ const mongoose = require("mongoose");
 
 
 const obj = {
-  "User": mongoose.model("User", require ("./user")),
-  "Template": mongoose.model("Template", require("./template"))
+  "User": mongoose.model("User", require ("./user"))
 };
 
 
