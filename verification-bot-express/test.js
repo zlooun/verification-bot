@@ -1,10 +1,8 @@
 "use strict";
 
 
-const obj = {
-  "name": "Ivan",
-  "lastname": "Shabanov",
-  "login": "zlooun",
-}
+const obj = new Promise((resolve, reject) => {
+  reject(123);
+})
 
-console.log(JSON.stringify(obj));
+obj.then((doc, err) => console.log(doc), (err) => console.log(err))

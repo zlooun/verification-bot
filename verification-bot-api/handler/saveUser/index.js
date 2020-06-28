@@ -7,7 +7,7 @@ const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
-const handler = (ctx, next) => {
+const handler = (ctx) => {
 
   const from = ctx.from;
   const createDate = Date.now();
@@ -28,7 +28,7 @@ const handler = (ctx, next) => {
     "uuid": uuid,
     "salt": salt,
     "isAuthenticated": false,
-    "notifications": false
+    "notifications": false,
   };
 
 

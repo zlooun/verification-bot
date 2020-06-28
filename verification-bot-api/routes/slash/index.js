@@ -11,28 +11,30 @@ const handler = (ctx, next) => {
       next();
       return;
     }
-
-    global.handler.checkExistUser(ctx.from, (err, data) => {
-
-      if (err) {
-        ctx.reply("error stac trays");
-        return;
-      }
   
-      if (data === "notExist") {
-        global.handler.saveUser(ctx, next);
-        return;
-      }
-  
-      if (data.isAuthenticated === false) {
+    const findObj = {
+      idUserTelegram: ctx.from.id
+    }
+
+    global.mongoModels.User.findOne(findObj)
+    .then((data) => {
+
+      if (!data) {
+        console.log("Ошибочка вышла.");
         return;
       }
 
-      global.session.set(ctx.sessionKey, data)
+      if (data.isAuthenticated === true) {
+        global.session.set(ctx.sessionKey, data)
       .then(() => next());
+      return;
+      }
+  
+      next();
 
-    });
+    }, (err) => console.log(err));
 
+    
   })
 
 };

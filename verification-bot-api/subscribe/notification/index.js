@@ -45,6 +45,8 @@ const handler = (channel, message) => {
 
     });
 
+    global.mongoModels
+
   }
     
 };

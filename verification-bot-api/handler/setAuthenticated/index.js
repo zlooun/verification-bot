@@ -21,20 +21,22 @@ const handler = () => {
       console.log("Нет аутинтифицированных пользователей.");
       return;
     }
+
     global.redis.del("queue")
-      .then(() => {
-        array.forEach((item, index, array) => {
+    .then(() => {
+
+      array.forEach((item, index) => {
 
         global.session.set(`${item.idUserTelegram}:${item.idChatTelegram}`, item, index == 0 ? true : false);
-        
-        if (item.notifications) {
-          
-          global.redis.hset("queue", item.idUserTelegram, index == 0 ? true : false);
-        
-        }
 
       })
       
+      array.filter((item) => item.notifications ? true : false).forEach((item, index) => {
+        
+        global.redis.hset("queue", item.idUserTelegram, index == 0 ? true : false);
+
+      });
+
     });
 
   });

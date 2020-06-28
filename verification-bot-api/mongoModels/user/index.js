@@ -23,7 +23,7 @@ const obj = new Schema ({
   "type": String,
   "photo": Object,
   "isAuthenticated": Boolean,
-  "notifications": Boolean
+  "notifications": Boolean,
 });
 
 

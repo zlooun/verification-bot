@@ -74,16 +74,22 @@ bot.use((ctx, next) => {
 
 stages(bot);
 
+bot.start((ctx) => global.routes.start(ctx));
+
 bot.use((ctx, next) => global.routes.slash(ctx, next));
 
 bot.use((ctx, next) => ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next());
 
 
-bot.start((ctx) => global.routes.start(ctx));
-
 bot.help((ctx) => global.routes.help(ctx));
 
 bot.command('authorization', (ctx) => ctx.scene.enter('authorization'));
+
+bot.command('turnOff', (ctx) => ctx.scene.enter('turnOffNotifications'));
+
+bot.command('turnOn', (ctx) => ctx.scene.enter('turnOnNotifications'));
+
+bot.on("message", ( {reply} ) => reply("Не известная команда, напишите /help, чтобы посмотреть какими командами вы можете пользоваться."));
 
 bot.startPolling();
 

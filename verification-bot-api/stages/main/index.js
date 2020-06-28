@@ -12,6 +12,8 @@ const handler = () => {
 
   main.command('cancel', Stage.leave());
   main.register(require("./authorization")());
+  main.register(require("./turnOffNotifications")());
+  main.register(require("./turnOnNotifications")());
 
   return main;
 };

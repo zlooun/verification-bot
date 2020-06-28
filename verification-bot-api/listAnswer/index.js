@@ -10,7 +10,8 @@ const handler = () => {
     "help": require("./help"),
     "settings": require("./settings"),
     "info": require("./info"),
-    "challenge": require("./challenge")
+    "challenge": require("./challenge"),
+    "notAuthenticated": require("./notAuthenticated")
   };
 };
 
