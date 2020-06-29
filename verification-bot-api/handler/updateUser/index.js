@@ -7,6 +7,7 @@ const handler = (ctx) => {
   const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
   
   const from = ctx.from;
+  const updateDate = Date.now();
 
 
   const updateObj = {
@@ -15,6 +16,7 @@ const handler = (ctx) => {
     "lastname": from.last_name,
     "login": from.username,
     "lang": from.language_code,
+    "lastUpdate": updateDate
   };
 
 

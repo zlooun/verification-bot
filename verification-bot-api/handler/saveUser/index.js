@@ -26,6 +26,7 @@ const handler = (ctx) => {
     "isBot": from.is_bot,
     "lock": false,
     "createDate": createDate,
+    "lastUpdate": createDate,
     "uuid": uuid,
     "salt": salt,
     "isAuthenticated": false,

@@ -11,6 +11,7 @@ const handler = () => {
     "authorization": require("./authorization"),
     "turnOff": require("./turnOff"),
     "turnOn": require("./turnOn"),
+    "other": require("./other")
   };
 };
 

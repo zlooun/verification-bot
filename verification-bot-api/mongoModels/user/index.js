@@ -17,6 +17,7 @@ const obj = new Schema ({
   "lastname": String,
   "login": String,
   "createDate": Date,
+  "lastUpdate": Date,
   "lock": Boolean,
   "isBot": Boolean,
   "lang": String,

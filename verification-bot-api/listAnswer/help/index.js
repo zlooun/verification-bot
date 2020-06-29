@@ -3,16 +3,29 @@
 
 
 
-const handler = (from, callback) => {
+const handler = (from, isAuthenticated) => {
 
-  const str = `${ from.first_name } ${ from.last_name }, команды ниже помогут тебе лучше понять мою работу\n
-  /help - помощь;\n
-  /authorization - авторизоваться;\n
-  /turnOn - включить уведомления;\n
-  /turnOff - выключить уведомления;\n`;
+  return new Promise((resolve) => {
 
+    let str;
 
-  callback(str);
+    if (isAuthenticated) {
+      str = `${ from.first_name } ${ from.last_name }, команды ниже помогут тебе лучше понять мою работу:\n
+/help - помощь;\n
+/turnOn - включить уведомления;\n
+/turnOff - выключить уведомления;\n`;
+
+    resolve(str);
+
+    }
+    
+    str = `${ from.first_name } ${ from.last_name }, т.к. ты не авторизован, тебе доступны только следующие команды:\n
+/help - помощь;\n
+/authorization - авторизоваться;\n`;
+
+    resolve(str);
+
+  })
 
 };
 

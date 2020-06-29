@@ -57,12 +57,6 @@ sub.subscribe("notification", (err, count) => {
 
 });
 
-//winston.info(`${log} - - ${Telegraf.log}`);
-
-/* if (nodeEnv === "development") {
-  bot.use(Telegraf.log());
-} */
-
 
 bot.catch((err) => winston.info(`${log} - - ${err}`));
 
@@ -119,10 +113,28 @@ bot.command('turnOn', (ctx) => {
   global.routes.turnOn(ctx);
 });
 
-bot.on("message", ( {reply} ) => {
+bot.hears(/^(🌚 )?Авторизоваться$/gi, (ctx) => {
   const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-  winston.info(`${log} - - Неизвестная комнада.`);
-  reply("Неизвестная команда, напишите /help, чтобы посмотреть какими командами вы можете пользоваться.")
+  winston.info(`${log} - - Пользователь ввел "Авторизоваться".`);
+  global.routes.authorization(ctx);
+}); 
+
+bot.hears(/^(👍 )?Включить уведомления$/gi, (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Пользователь ввел "Включить уведомления".`);
+  global.routes.turnOn(ctx);
+});
+
+bot.hears(/^(👎 )?Выключить уведомления$/gi, (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Пользователь ввел "Выключить уведомления".`);
+  global.routes.turnOff(ctx);
+});
+
+bot.on("message", (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  winston.info(`${log} - - Неизвестная команда.`);
+  global.routes.other(ctx);
 });
 
 bot.startPolling();
