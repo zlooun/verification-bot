@@ -7,7 +7,7 @@ const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
-const handler = (ctx, isAuthenticated) => {
+const handler = (ctx) => {
   const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
   
   const from = ctx.from;
@@ -28,7 +28,7 @@ const handler = (ctx, isAuthenticated) => {
     "createDate": createDate,
     "uuid": uuid,
     "salt": salt,
-    "isAuthenticated": isAuthenticated === undefined ? false : true,
+    "isAuthenticated": false,
     "notifications": false,
   };
 

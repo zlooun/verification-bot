@@ -11,6 +11,8 @@ const handler = (ctx, next) => {
 
     if (Object.keys(session).length) {
       winston.info(`${log} - - Сессия существует.`);
+      winston.info(`${log} - - Обновляем данные о пользователе.`);
+      global.handler.updateUser(ctx);
       next();
       return;
     }
@@ -29,16 +31,15 @@ const handler = (ctx, next) => {
         return;
       }
 
+      winston.info(`${log} - - Обновляем данные о пользователе.`);
+      global.handler.updateUser(ctx);
+
       if (data.isAuthenticated === true) {
-        winston.info(`${log} - - Обновляем данные о пользователе.`);
-        global.handler.saveUser(ctx);
-        winston.info(`${log} - - Пользователь авторизован - установить сессию.`);
+        winston.info(`${log} - - Пользователь авторизован - устанавливаем сессию.`);
         global.session.set(ctx.sessionKey, data)
       .then(() => next());
       return;
       }
-      winston.info(`${log} - - Обновляем данные о пользователе.`);
-      global.handler.saveUser(ctx);
 
       winston.info(`${log} - - Пользователь не авторизован.`);
       next();
