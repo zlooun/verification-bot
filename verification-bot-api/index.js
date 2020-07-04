@@ -33,16 +33,18 @@ const dirname = path.relative(process.cwd(), __dirname);
 const log = `[BOT][SYSTEM] - - [${dirname}]`;
 
 global.configs = configs();
-global.handler = handler();
 global.mongoModels = mongoModels;
 global.routes = routes();
 global.listAnswer = listAnswer();
 global.session = session();
 global.winston = winston;
 global.telegram = telegram;
+global.handler = handler();
 
 
 global.winston.configure(global.configs.winston());
+global.handler.setIntervalForWinstonsConfigs();
+
 
 global.redis = new Redis(global.configs.redis()[0].to());
 const sub = new Redis(global.configs.redis()[0].to());

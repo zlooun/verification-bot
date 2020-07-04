@@ -7,7 +7,8 @@ const handler = () => {
   return {
     "saveUser": require("./saveUser"),
     "setAuthenticated": require("./setAuthenticated"),
-    "updateUser": require("./updateUser")
+    "updateUser": require("./updateUser"),
+    "setIntervalForWinstonsConfigs": require("./setIntervalForWinstonsConfigs"),
   };
 };
 
