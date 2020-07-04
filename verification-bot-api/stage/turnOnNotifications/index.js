@@ -31,30 +31,30 @@ const handler = () => {
 
       winston.info(`${log} - - Пользователь авторизирован.`);
 
-      global.redis.hexists("queue", ctx.from.id)
-      .then((result) => {
+      return global.redis.hexists("queue", ctx.from.id);
+      
+    }, (err) => winston.error(`${log} - - ${err}`))
+    .then((result) => {
 
-        if (result) {
-          winston.info(`${log} - - Уведомления у пользователя включены.`);
-          winston.info(`${log} - - Отправляем ответ пользователю.`);
-          ctx.reply("У вас уже включены уведомления.", {reply_markup: {remove_keyboard: true}});
-
-          winston.info(`${log} - - Покидаем сцену.`);
-          ctx.scene.leave();
-          return;
-        }
-
-        winston.info(`${log} - - Уведомления у пользователя отключены.`);
-
+      if (result) {
+        winston.info(`${log} - - Уведомления у пользователя включены.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
-        ctx.reply(`Вы уверены, что хотите включить уведмоления? (Введите "Да" или "Нет")`, Markup
-          .keyboard(['✅ Да', '❌ Нет'])
-          .oneTime()
-          .resize()
-          .extra()
-        );
+        ctx.reply("У вас уже включены уведомления.", {reply_markup: {remove_keyboard: true}});
 
-      }, (err) => winston.error(`${log} - - ${err}`));
+        winston.info(`${log} - - Покидаем сцену.`);
+        ctx.scene.leave();
+        return;
+      }
+
+      winston.info(`${log} - - Уведомления у пользователя отключены.`);
+
+      winston.info(`${log} - - Отправляем ответ пользователю.`);
+      ctx.reply(`Вы уверены, что хотите включить уведмоления? (Введите "Да" или "Нет")`, Markup
+        .keyboard(['✅ Да', '❌ Нет'])
+        .oneTime()
+        .resize()
+        .extra()
+      );
 
     }, (err) => winston.error(`${log} - - ${err}`));
 
@@ -76,35 +76,26 @@ const handler = () => {
         return;
       }
 
-      global.session.set(ctx.sessionKey, user)
-      .then(() => {
+      return global.session.set(ctx.sessionKey, user);
+    }, (err) => winston.error(`${log} - - ${err}`))
+    .then(() => global.redis.exists("queue"), (err) => winston.error(`${log} - - ${err}`))
+    .then((result) => global.redis.hset("queue", ctx.from.id, !result), (err) => winston.error(`${log} - - ${err}`))
+    .then((result) => {
 
-        global.redis.exists("queue")
-        .then((result) => {
+      if (result) {
+        winston.info(`${log} - - Пользователь добавлен в очередь. Уведомления включены.`);
+        winston.info(`${log} - - Отправляем ответ пользователю.`);
+        ctx.reply("Уведомления включены.", {reply_markup: {remove_keyboard: true}});
+        winston.info(`${log} - - Покидаем сцену.`);
+        ctx.scene.leave();
+        return;
+      }
 
-          global.redis.hset("queue", ctx.from.id, !result)
-          .then((result) => {
-  
-            if (result) {
-              winston.info(`${log} - - Пользователь добавлен в очередь. Уведомления включены.`);
-              winston.info(`${log} - - Отправляем ответ пользователю.`);
-              ctx.reply("Уведомления включены.", {reply_markup: {remove_keyboard: true}});
-              winston.info(`${log} - - Покидаем сцену.`);
-              ctx.scene.leave();
-              return;
-            }
-  
-            winston.warn(`${log} - - Пользователь не добавился в очередь. WHAT?`);
-            winston.info(`${log} - - Отправляем ответ пользователю.`);
-            ctx.reply("Вы не добавились в очередь.WHAT?.", {reply_markup: {remove_keyboard: true}});
-            winston.info(`${log} - - Покидаем сцену.`);
-            ctx.scene.leave();
-
-          }, (err) => winston.error(`${log} - - ${err}`));
-
-        }, (err) => winston.error(`${log} - - ${err}`));
-
-      }, (err) => winston.error(`${log} - - ${err}`));
+      winston.warn(`${log} - - Пользователь не добавился в очередь. WHAT?`);
+      winston.info(`${log} - - Отправляем ответ пользователю.`);
+      ctx.reply("Вы не добавились в очередь.WHAT?.", {reply_markup: {remove_keyboard: true}});
+      winston.info(`${log} - - Покидаем сцену.`);
+      ctx.scene.leave();
 
     }, (err) => winston.error(`${log} - - ${err}`));
     
