@@ -7,8 +7,11 @@ const crypto = require ("crypto");
 const uuidV1 = require ("uuid/v1");
 
 
+const dirname = path.relative(process.cwd(), __dirname);
+
+
 const handler = (ctx) => {
-  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
   
   const from = ctx.from;
   const createDate = Date.now();

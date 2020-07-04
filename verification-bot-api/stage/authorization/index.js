@@ -5,21 +5,20 @@
 const Markup = require('telegraf/markup');
 const Scene = require('telegraf/scenes/base');
 
+const dirname = path.relative(process.cwd(), __dirname);
 
 const handler = () => {
 
   const authorization = new Scene('authorization');
 
   authorization.enter((ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь вошел в сцену.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
-    winston.info(`${log} - - Поиск сессии пользователя в redis.`);
     global.session.get(ctx.sessionKey)
     .then((session) => {
 
       if (Object.keys(session).length) {
-        winston.info(`${log} - - Сессия найдена.`);
+        winston.info(`${log} - - Пользователь авторизирован.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         global.listAnswer.isAuthenticated()
         .then((str) => ctx.reply(str, {reply_markup: {remove_keyboard: true}}));
@@ -28,18 +27,17 @@ const handler = () => {
         return;
       }
 
-      winston.info(`${log} - - Сессия не найдена.`);
-
+      winston.info(`${log} - - Пользователь не авторизирован.`);
       winston.info(`${log} - - Отправляем ответ пользователю.`);
       ctx.reply('Введи свой токен авторизации, чтобы я смог тебя опознать.', {reply_markup: {remove_keyboard: true}});
 
-    })
+    });
 
   });
 
   authorization.hears(/^(⛔ )?Хватит$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел "хватит".`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply("Прощай(", {reply_markup: {remove_keyboard: true}});
@@ -49,6 +47,8 @@ const handler = () => {
   }); 
 
   authorization.hears(/^Пусти$/gi, (ctx) => {
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
     ctx.reply("Ну ладно)", {reply_markup: {remove_keyboard: true}});
     ctx.scene.leave();
@@ -60,16 +60,16 @@ const handler = () => {
       .then((user) => {
         global.session.set(ctx.sessionKey, user);
         global.redis.exists("queue")
-        .then((result) => global.redis.hset("queue", ctx.from.id, result ? false : true))
+        .then((result) => global.redis.hset("queue", ctx.from.id, !result))
       });
 
-    })
+    });
     
   });
 
   authorization.on('message', (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел то, что не ожидалось.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply(`Я тебя не знаю:(

@@ -5,25 +5,24 @@
 const Markup = require('telegraf/markup');
 const Scene = require('telegraf/scenes/base');
 
+const dirname = path.relative(process.cwd(), __dirname);
 
 const handler = () => {
 
   const start = new Scene('start');
 
   start.enter((ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь вошел в сцену.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
     const findObj = {
       idUserTelegram: ctx.from.id
-    }
+    };
   
-    winston.info(`${log} - - Поиск пользователя в бд.`);
     global.mongoModels.User.findOne(findObj)
     .then((doc) => {
   
       if (!doc) {
-        winston.info(`${log} - - Пользователь не найден.`);
+        winston.info(`${log} - - Пользователя нет в бд.`);
   
         winston.info(`${log} - - Сохраняем пользователя в бд.`);
         global.handler.saveUser(ctx);
@@ -40,7 +39,7 @@ const handler = () => {
         return; 
       }
   
-      winston.info(`${log} - - Пользователь найден.`);
+      winston.info(`${log} - - Пользователь найден в бд.`);
   
       winston.info(`${log} - - Отправляем ответ пользователю.`);
       global.listAnswer.existUser(ctx)  
@@ -67,8 +66,8 @@ const handler = () => {
   });
 
   start.hears(/^(🌚 )?Авторизоваться$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел "Авторизоваться".`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
     winston.info(`${log} - - Запускается сцена авторизации.`);
     ctx.scene.enter('authorization');
@@ -78,8 +77,8 @@ const handler = () => {
   }); 
 
   start.on('message', (ctx, next) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел то, что не ожидалось.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}, (неизвестная команда).`);
 
     winston.info(`${log} - - Покидаем сцену.`);
     ctx.scene.leave();

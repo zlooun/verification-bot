@@ -4,9 +4,9 @@
 
 
 const handler = (ctx) => {
-  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  const log = `[BOT][${ctx.from.id}] - - [${path.relative(process.cwd(), __dirname)}]`;
 
-  winston.info(`${log} - - Запускается сцена другое.`);
+  winston.info(`${log} - - Запускается сцена "Другое".`);
   ctx.scene.enter('other');
 
 };

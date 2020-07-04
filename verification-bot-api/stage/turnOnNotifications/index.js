@@ -6,21 +6,21 @@
 const Markup = require('telegraf/markup');
 const Scene = require('telegraf/scenes/base');
 
+const dirname = path.relative(process.cwd(), __dirname);
 
 const handler = () => {
 
   const turnOnNotifications = new Scene('turnOnNotifications');
 
   turnOnNotifications.enter((ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь вошел в сцену.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
-    winston.info(`${log} - - Поиск сессии пользователя в redis.`);
+
     global.session.get(ctx.sessionKey)
     .then((session) => {
 
       if (!Object.keys(session).length) {
-        winston.info(`${log} - - Сессия не найдена.`);
+        winston.info(`${log} - - Пользователь не авторизирован.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         global.listAnswer.notAuthenticated(ctx.from)
         .then((str) => ctx.reply(str, {reply_markup: {remove_keyboard: true}}));
@@ -29,9 +29,8 @@ const handler = () => {
         return;
       }
 
-      winston.info(`${log} - - Сессия найдена.`);
+      winston.info(`${log} - - Пользователь авторизирован.`);
 
-      winston.info(`${log} - - Проверяем включены ли у пользователя уведомления.`);
       global.redis.hexists("queue", ctx.from.id)
       .then((result) => {
 
@@ -39,6 +38,7 @@ const handler = () => {
           winston.info(`${log} - - Уведомления у пользователя включены.`);
           winston.info(`${log} - - Отправляем ответ пользователю.`);
           ctx.reply("У вас уже включены уведомления.", {reply_markup: {remove_keyboard: true}});
+
           winston.info(`${log} - - Покидаем сцену.`);
           ctx.scene.leave();
           return;
@@ -61,15 +61,14 @@ const handler = () => {
   });
 
   turnOnNotifications.hears(/^(✅ )?Да$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел "да".`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел "${ctx.update.message.text}".`);
 
-    winston.info(`${log} - - Обновляем пользователя в бд.`);
     global.mongoModels.User.findOneAndUpdate({"idUserTelegram": ctx.from.id}, { "notifications": true }, { new : true })
     .then((user) => {
 
       if (!user) {
-        winston.info(`${log} - - Пользователь не обновился.`);
+        winston.info(`${log} - - Пользователь не обновился в бд.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         ctx.reply("Ошибка.", {reply_markup: {remove_keyboard: true}});
         winston.info(`${log} - - Покидаем сцену.`);
@@ -77,17 +76,13 @@ const handler = () => {
         return;
       }
 
-      winston.info(`${log} - - Обновляем сессию пользователя.`);
       global.session.set(ctx.sessionKey, user)
       .then(() => {
 
-        winston.info(`${log} - - Проверяем пуста ли очередь.`);
         global.redis.exists("queue")
         .then((result) => {
 
-          result ? winston.info(`${log} - - Очередь не пуста. Назначаем пользователя следующим в очереди.`)
-          : winston.info(`${log} - - Очередь пуста. Просто добавляем пользователя в конец очереди.`);
-          global.redis.hset("queue", ctx.from.id, result ? false : true)
+          global.redis.hset("queue", ctx.from.id, !result)
           .then((result) => {
   
             if (result) {
@@ -116,8 +111,8 @@ const handler = () => {
   });
 
   turnOnNotifications.hears(/^(❌ )?Нет$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел "нет".`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел "${ctx.update.message.text}".`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply("Уведомления по-прежнему отключены.", {reply_markup: {remove_keyboard: true}});
@@ -127,8 +122,8 @@ const handler = () => {
   });
 
   turnOnNotifications.on('message', (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь ввел неизвестную команду.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+    winston.info(`${log} - - Пользователь ввел "${ctx.update.message.text}", (неизвестная команда).`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply(`Я вас не понимаю. Введите "Да" или "Нет".`, Markup

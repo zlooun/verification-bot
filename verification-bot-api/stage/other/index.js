@@ -5,15 +5,16 @@
 const Markup = require('telegraf/markup');
 const Scene = require('telegraf/scenes/base');
 
+const dirname = path.relative(process.cwd(), __dirname);
 
 const handler = () => {
 
   const other = new Scene('other');
 
   other.enter((ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь вошел в сцену.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
+    winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply("Неизвестная команда, напиши /help, чтобы посмотреть какими командами ты можешь пользоваться.", Markup
       .keyboard(['💡 Помощь'])
       .oneTime()
@@ -24,7 +25,7 @@ const handler = () => {
   });
 
   other.hears(/^(💡 )?Помощь$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел "Помощь".`);
 
     winston.info(`${log} - - Запускается сцена помощи.`);
@@ -35,7 +36,7 @@ const handler = () => {
   }); 
 
   other.on('message', (ctx, next) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел то, что не ожидалось.`);
 
     winston.info(`${log} - - Покидаем сцену.`);

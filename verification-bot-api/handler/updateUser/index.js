@@ -3,8 +3,11 @@
 
 
 
+const dirname = path.relative(process.cwd(), __dirname);
+
+
 const handler = (ctx) => {
-  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+  const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
   
   const from = ctx.from;
   const updateDate = Date.now();
@@ -28,9 +31,7 @@ const handler = (ctx) => {
       return;
     }
 
-    winston.info(`${log} - - Пользователь обновился в бд.`);
-
-  }, (err) => winston.info(`${log} - - ${err}`))
+  }, (err) => winston.info(`${log} - - ${err}`));
 
 };
 

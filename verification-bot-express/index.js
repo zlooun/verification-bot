@@ -2,14 +2,15 @@
 
 
 
-
-const log = `[EXPRESS][SYSTEM] - - [${__dirname.slice(49)}]`;
+const dirname = path.relative(process.cwd(), __dirname);
+const log = `[EXPRESS][SYSTEM] - - [${dirname}]`;
 
 const app = require('express')();
 const mongoose = require('mongoose');
 const Redis = require('ioredis');
 const bodyParser = require('body-parser');
 const winston = require("winston");
+const path = require("path");
 
 
 const mongoModels = require('./mongoModels');
@@ -21,10 +22,14 @@ const routes = require('./routes');
 global.configs = configs();
 global.mongoModels = mongoModels;
 global.winston = winston; 
+global.path = path;
 
 global.redis = new Redis(global.configs.connectInternal().redis()[0].to());
 global.winston.configure(global.configs.winston());
 
+
+const dirname = path.relative(process.cwd(), __dirname);
+const log = `[EXPRESS][SYSTEM] - - [${dirname}]`;
 
 
 mongoose.connect(global.configs.connectInternal().mongo()[0].to(), { "useNewUrlParser": true, "useFindAndModify": false, "useUnifiedTopology": true });

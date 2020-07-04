@@ -7,7 +7,7 @@ const handler = () => {
 
   return new Promise((resolve) => {
 
-    const str = `Вы уже авторизованы.`;
+    const str = `Ты уже авторизован.`;
 
     resolve(str)
 

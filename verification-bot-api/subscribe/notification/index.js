@@ -3,8 +3,11 @@
 
 
 
+const dirname = path.relative(process.cwd(), __dirname);
+
+
 const handler = (channel, message) => {
-  const log = `[BOT][EXPRESS] - - [${__dirname.slice(49)}]`;
+  const log = `[BOT][EXPRESS] - - [${dirname}]`;
   winston.info(`${log} - - Бот получил запрос через redis от express.`);
 
   if (channel === "notification") {

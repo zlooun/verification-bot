@@ -3,10 +3,13 @@
 
 
 
-const handler = (ctx) => {
-  const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+const dirname = path.relative(process.cwd(), __dirname);
 
-  winston.info(`${log} - - Запускается сцена авторизации.`);
+
+const handler = (ctx) => {
+  const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
+
+  winston.info(`${log} - - Запускается сцена "Авторизация".`);
   ctx.scene.enter('authorization');
 
 };

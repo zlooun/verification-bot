@@ -10,8 +10,7 @@ const handler = (from, isAuthenticated) => {
     let str;
 
     if (isAuthenticated) {
-      str = `${ from.first_name } ${ from.last_name }, команды ниже помогут тебе лучше понять мою работу:\n
-/help - помощь;\n
+      str = `${ from.first_name } ${ from.last_name }, тебе доступны только следующие команды:\n
 /turnOn - включить уведомления;\n
 /turnOff - выключить уведомления;\n`;
 

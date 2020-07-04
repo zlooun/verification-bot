@@ -5,20 +5,18 @@
 const Markup = require('telegraf/markup');
 const Scene = require('telegraf/scenes/base');
 
+const dirname = path.relative(process.cwd(), __dirname);
 
 const handler = () => {
 
   const help = new Scene('help');
 
   help.enter((ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
-    winston.info(`${log} - - Пользователь вошел в сцену.`);
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
-    winston.info(`${log} - - Поиск сессии пользователя в redis.`);
     global.session.get(ctx.sessionKey)
     .then((session) => {
 
-      winston.info(`${log} - - Проверяем авторизован ли пользователь или нет.`);
       if (!Object.keys(session).length) {
         winston.info(`${log} - - Пользователь не авторизован.`);
 
@@ -51,7 +49,7 @@ const handler = () => {
   });
 
   help.hears(/^(🌚 )?Авторизоваться$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел "Авторизоваться".`);
 
     winston.info(`${log} - - Запускается сцена авторизации.`);
@@ -62,7 +60,7 @@ const handler = () => {
   }); 
 
   help.hears(/^(👍 )?Включить уведомления$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел "Включить уведомления".`);
 
     winston.info(`${log} - - Запускается сцена включения уведомлений.`);
@@ -73,7 +71,7 @@ const handler = () => {
   });
 
   help.hears(/^(👎 )?Выключить уведомления$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел "Выключить уведомления".`);
 
     winston.info(`${log} - - Запускается сцена выключения уведомлений.`);
@@ -84,7 +82,7 @@ const handler = () => {
   });
 
   help.hears(/^(👌 )?Понял$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел "Понял".`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
@@ -95,7 +93,7 @@ const handler = () => {
   }); 
 
   help.on('message', (ctx, next) => {
-    const log = `[BOT][${ctx.from.id}] - - [${__dirname.slice(49)}]`;
+    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел то, что не ожидалось.`);
 
     winston.info(`${log} - - Покидаем сцену.`);
