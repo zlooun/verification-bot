@@ -43,12 +43,12 @@ const handler = (ctx) => {
   user.save((err, doc) => {
 
     if (err) {
-      winston.info(`${log} - - ${err}.`);
+      winston.error(`${log} - - ${err}.`);
       return;
     }
 
     if (!doc) {
-      winston.info(`${log} - - Пользователь не сохранился в бд.`);
+      winston.warn(`${log} - - Пользователь не сохранился в бд.`);
       return;
     }
 

@@ -5,7 +5,7 @@
 require ("./.env")();
 
 
-const nodeEnv = global.process.env.NODE_ENV;
+//const nodeEnv = global.process.env.NODE_ENV;
 
 
 const Telegraf = require("telegraf");
@@ -50,7 +50,7 @@ const sub = new Redis(global.configs.redis()[0].to());
 sub.subscribe("notification", (err) => {
 
   if (err) {
-    winston.info(`${log} - - ${err}`);
+    winston.error(`${log} - - ${err}`);
     return;
   }
 
@@ -59,7 +59,7 @@ sub.subscribe("notification", (err) => {
 });
 
 
-bot.catch((err) => winston.info(`${log} - - ${err}`));
+bot.catch((err) => winston.error(`${log} - - ${err}`));
 
 
 bot.use(tgSession());
@@ -68,6 +68,17 @@ bot.use((ctx, next) => {
   ctx.sessionKey = ctx.from && ctx.chat && `${ctx.from.id}:${ctx.chat.id}`;
   next();
 });
+
+//Отсекаем сообщения, которые были отправлены до того, как бот был запущен
+bot.use((ctx, next) => {
+
+  const date = ctx.update.message.date * 1000;
+
+  if (global.startBotDate < date) {
+    next();
+  }
+  
+})
 
 bot.use(stage());
 
@@ -86,7 +97,7 @@ bot.use((ctx, next) => {
 bot.use((ctx, next) => {
   const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
-  ctx.from.is_bot ? winston.info(`${log} - - Бот не пропущен.`) : next();
+  ctx.from.is_bot ? winston.warn(`${log} - - Бот не пропущен.`) : next();
 });
 
 
@@ -151,7 +162,7 @@ mongoose.connect(global.configs.mongo(), { "useNewUrlParser": true, "useFindAndM
 mongoose.connection.on("open", (err) => {
 
   if (err) {
-    winston.info(`${log} - - ${err}`)
+    winston.error(`${log} - - ${err}`)
     return;
   }
 
@@ -159,6 +170,9 @@ mongoose.connection.on("open", (err) => {
 
   winston.info(`${log} - - Прогрев кэша в redis.`);
   global.handler.setAuthenticated()
-  .then(() => bot.launch().then(() => winston.info(`${log} - - Старт бота выполнен.`)), (err) => winston.info(`${log} - - ${err}`));
+  .then(() => bot.launch().then(() => {
+    global.startBotDate = new Date();   //запоминаем дату запуска бота
+    winston.info(`${log} - - Старт бота выполнен.`);
+  }), (err) => winston.error(`${log} - - ${err}`));
 
 });

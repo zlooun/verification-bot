@@ -60,10 +60,10 @@ const handler = () => {
       .then((user) => {
         global.session.set(ctx.sessionKey, user);
         global.redis.exists("queue")
-        .then((result) => global.redis.hset("queue", ctx.from.id, !result))
-      });
-
-    });
+        .then((result) => global.redis.hset("queue", ctx.from.id, !result), (err) => winston.error(`${log} - - ${err}`));
+      }, (err) => winston.error(`${log} - - ${err}`));
+      
+    }, (err) => winston.error(`${log} - - ${err}`));
     
   });
 
@@ -78,7 +78,7 @@ const handler = () => {
       .oneTime()
       .resize()
       .extra()
-    )
+    );
   });
 
   return authorization;

@@ -36,7 +36,7 @@ const handler = () => {
           .extra()
         ));
         
-        return; 
+        return;
       }
   
       winston.info(`${log} - - Пользователь найден в бд.`);
@@ -61,7 +61,7 @@ const handler = () => {
         ctx.scene.leave();
       });
   
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
 
   });
 

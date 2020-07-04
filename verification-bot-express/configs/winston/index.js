@@ -1,7 +1,10 @@
 "use strict";
 
 
+
+
 const path = process.env.TYPE_ENV === "docker" ? "./logs/log_" : "../logs/log_";
+
 
 const handler = () => {
 

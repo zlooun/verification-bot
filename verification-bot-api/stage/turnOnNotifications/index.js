@@ -54,9 +54,9 @@ const handler = () => {
           .extra()
         );
 
-      }, (err) => winston.info(`${log} - - ${err}`));
+      }, (err) => winston.error(`${log} - - ${err}`));
 
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
 
   });
 
@@ -68,7 +68,7 @@ const handler = () => {
     .then((user) => {
 
       if (!user) {
-        winston.info(`${log} - - Пользователь не обновился в бд.`);
+        winston.warn(`${log} - - Пользователь не обновился в бд.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         ctx.reply("Ошибка.", {reply_markup: {remove_keyboard: true}});
         winston.info(`${log} - - Покидаем сцену.`);
@@ -94,19 +94,19 @@ const handler = () => {
               return;
             }
   
-            winston.info(`${log} - - Пользователь не добавился в очередь. WHAT?`);
+            winston.warn(`${log} - - Пользователь не добавился в очередь. WHAT?`);
             winston.info(`${log} - - Отправляем ответ пользователю.`);
             ctx.reply("Вы не добавились в очередь.WHAT?.", {reply_markup: {remove_keyboard: true}});
             winston.info(`${log} - - Покидаем сцену.`);
             ctx.scene.leave();
 
-          }, (err) => winston.info(`${log} - - ${err}`));
+          }, (err) => winston.error(`${log} - - ${err}`));
 
-        }, (err) => winston.info(`${log} - - ${err}`));
+        }, (err) => winston.error(`${log} - - ${err}`));
 
-      }, (err) => winston.info(`${log} - - ${err}`));
+      }, (err) => winston.error(`${log} - - ${err}`));
 
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
     
   });
 

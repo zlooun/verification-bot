@@ -52,9 +52,9 @@ const handler = () => {
           .extra()
         );
 
-      }, (err) => winston.info(`${log} - - ${err}`));
+      }, (err) => winston.error(`${log} - - ${err}`));
 
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
 
   });
 
@@ -66,7 +66,7 @@ const handler = () => {
     .then((user) => {
 
       if (!user) {
-        winston.info(`${log} - - Пользователь не обновился в бд.`);
+        winston.warn(`${log} - - Пользователь не обновился в бд.`);
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         ctx.reply("Ошибка.", {reply_markup: {remove_keyboard: true}});
         winston.info(`${log} - - Покидаем сцену.`);
@@ -95,7 +95,7 @@ const handler = () => {
                 return;
               }
     
-              winston.info(`${log} - - Пользователь не удалился из очереди. WHAT?`);
+              winston.warn(`${log} - - Пользователь не удалился из очереди. WHAT?`);
               winston.info(`${log} - - Отправляем ответ пользователю.`);
               ctx.reply("Вы не удалились из очереди.WHAT?.", {reply_markup: {remove_keyboard: true}});
 
@@ -130,22 +130,22 @@ const handler = () => {
                     return;
                   }
         
-                  winston.info(`${log} - - Пользователь не удалился из очереди.WHAT?.`);
+                  winston.warn(`${log} - - Пользователь не удалился из очереди.WHAT?.`);
                   winston.info(`${log} - - Отправляем ответ пользователю.`);
                   ctx.reply("Вы не удалились из очереди.WHAT?.", {reply_markup: {remove_keyboard: true}});
                   winston.info(`${log} - - Покидаем сцену.`);
                   ctx.scene.leave();
         
-                }, (err) => winston.info(`${log} - - ${err}`));
+                }, (err) => winston.error(`${log} - - ${err}`));
     
                 if (queue.length !== 1) {
 
                   if (i === queue.length - 1) {
-                    global.redis.hset("queue", queue[0][0], true).catch((err) => winston.info(`${log} - - ${err}`));
+                    global.redis.hset("queue", queue[0][0], true).catch((err) => winston.error(`${log} - - ${err}`));
                     return;
                   }
                   
-                  global.redis.hset("queue", queue[i + 1][0], true).catch((err) => winston.info(`${log} - - ${err}`));
+                  global.redis.hset("queue", queue[i + 1][0], true).catch((err) => winston.error(`${log} - - ${err}`));
                   return;
 
                 }
@@ -156,13 +156,13 @@ const handler = () => {
     
             }
     
-          }, (err) => winston.info(`${log} - - ${err}`));
+          }, (err) => winston.error(`${log} - - ${err}`));
 
-        }, (err) => winston.info(`${log} - - ${err}`));
+        }, (err) => winston.error(`${log} - - ${err}`));
 
-      }, (err) => winston.info(`${log} - - ${err}`));
+      }, (err) => winston.error(`${log} - - ${err}`));
 
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
     
   }); 
 

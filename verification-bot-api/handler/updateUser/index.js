@@ -27,11 +27,11 @@ const handler = (ctx) => {
   .then((updatedUser) => {
 
     if (!updatedUser) {
-      winston.info(`${log} - - Пользователь не обновился в бд.`);
+      winston.warn(`${log} - - Пользователь не обновился в бд.`);
       return;
     }
 
-  }, (err) => winston.info(`${log} - - ${err}`));
+  }, (err) => winston.error(`${log} - - ${err}`));
 
 };
 

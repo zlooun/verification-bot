@@ -15,7 +15,7 @@ const handler = (channel, message) => {
     winston.info(`${log} - - Бот получил запрос на отправку уведомления.`);
 
     message = JSON.parse(message);
-    console.log(message);
+
     const newMessage = `Имя: ${message.name}\n` +
     `Фамилия: ${message.lastname ? message.lastname : "отсутствует"}\n` +
     `Логин: ${message.login}`;
@@ -24,7 +24,7 @@ const handler = (channel, message) => {
     .then((queue) => {
 
       if (!Object.values(queue).length){
-        winston.info(`${log} - - Очердь пуста, некому отправить уведомление.`);
+        winston.warn(`${log} - - Очердь пуста, некому отправить уведомление.`);
         return;
       }
 
@@ -41,22 +41,22 @@ const handler = (channel, message) => {
           global.telegram.sendMessage(turn[0], newMessage);
 
           global.redis.hset("queue", turn[0], false)
-          .catch((err) => winston.info(`${log} - - ${err}`));
+          .catch((err) => winston.error(`${log} - - ${err}`));
 
           if (i === queue.length - 1) {
             global.redis.hset("queue", queue[0][0], true)
-            .catch((err) => winston.info(`${log} - - ${err}`));
+            .catch((err) => winston.error(`${log} - - ${err}`));
             break;
           }
 
           global.redis.hset("queue", queue[i + 1][0], true)
-          .catch((err) => winston.info(`${log} - - ${err}`));
+          .catch((err) => winston.error(`${log} - - ${err}`));
           break;
         }
 
       }
 
-    }, (err) => winston.info(`${log} - - ${err}`));
+    }, (err) => winston.error(`${log} - - ${err}`));
 
   }
     
