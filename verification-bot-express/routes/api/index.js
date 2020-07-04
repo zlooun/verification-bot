@@ -6,9 +6,9 @@
 const router = require("router")();
 
 
-router.use("/sendNotification", require("./sendNotification")());
+router.use("/sendNotification", require("./sendNotification"));
 
 
 
 
-module.exports = () => router;
+module.exports = router;

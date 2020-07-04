@@ -47,7 +47,7 @@ global.winston.configure(global.configs.winston());
 global.redis = new Redis(global.configs.redis()[0].to());
 const sub = new Redis(global.configs.redis()[0].to());
 
-sub.subscribe("notification", (err, count) => {
+sub.subscribe("notification", (err) => {
 
   if (err) {
     winston.info(`${log} - - ${err}`);

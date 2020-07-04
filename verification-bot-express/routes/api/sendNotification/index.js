@@ -7,28 +7,28 @@ const saveRequest = require("./saveRequest");
 
 
 const handler = (req, res) => {
+  const log = `[EXPRESS][${req.ip}] - - [${req.originalUrl}] - -`;
 
   let notification = req.body.notification;
 
   if (!notification) {
     res.send("Notification is empty");
+    winston.info(`${log} Уведомление пустое.`);
+    return;
   }
 
   res.send("Success");
 
 
-  notification = JSON.parse(notification);
+  winston.info(`${log} Сохраняем запрос.`);
+  saveRequest(JSON.parse(notification)).catch((err) => winston.info(`${log} ${err}.`));
 
-  saveRequest(notification)
-    .then(() => {
-      console.log(JSON.stringify(notification));
-      global.redis.publish("notification", JSON.stringify(notification));
-    })
-  
+  winston.info(`${log} Отправляем уведомление через pub/sub.`);
+  global.redis.publish("notification", notification);
 
 };
 
 
 
 
-module. exports = () => handler;
+module. exports = handler;

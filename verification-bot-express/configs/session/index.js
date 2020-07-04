@@ -3,8 +3,8 @@
 
 
 
-const typeEnv = process. env. TYPE_ENV;
-const nodeEnv = process. env. NODE_ENV;
+const typeEnv = process.env.TYPE_ENV;
+const nodeEnv = process.env.NODE_ENV;
 
 
 
@@ -23,12 +23,12 @@ const handler = (connectStore) => {
 
 
   if (nodeEnv == "development") {
-    objSession. cookie. sameSite = false;
+    objSession.cookie.sameSite = false;
   }
 
 
   if (nodeEnv == "production") {
-    objSession. cookie. sameSite = true;
+    objSession.cookie.sameSite = true;
   }
 
 
@@ -38,4 +38,4 @@ const handler = (connectStore) => {
 
 
 
-module. exports = () => handler;
+module.exports = handler;

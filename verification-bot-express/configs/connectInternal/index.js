@@ -5,12 +5,12 @@
 
 const handler = () => {
   return {
-    "mongo": require ("./mongo") (),
-    "redis": require ("./redis") ()
+    "mongo": require("./mongo"),
+    "redis": require("./redis")
   };
 };
 
 
 
 
-module. exports = () => handler;
+module. exports = handler;

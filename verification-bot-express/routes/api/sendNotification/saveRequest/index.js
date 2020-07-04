@@ -15,12 +15,10 @@ const handler = (notification) => {
     request.save((err, doc) => {
 
       if (err) {
-        console.log(err);
         reject(err);
       }
 
       if (!doc) {
-        console.log("notExist");
         reject("notExist");
       }
       
@@ -28,7 +26,7 @@ const handler = (notification) => {
 
     });
 
-  })
+  });
 
 };
 

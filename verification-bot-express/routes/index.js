@@ -8,10 +8,10 @@ const router = require("router")();
 
 
 
-router.use("/api", require("./api")());
-router.use("/*", require("./slash")());
+router.use("/api", require("./api"));
+router.use("/*", require("./slash"));
 
 
 
 
-module.exports = () => router;
+module.exports = router;

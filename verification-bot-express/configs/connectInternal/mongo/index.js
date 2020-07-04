@@ -7,7 +7,6 @@ const TYPE_ENV = process.env.TYPE_ENV;
 
 
 const handler = () => {
-
   return [
     {
       "protocol": "mongodb",
@@ -29,4 +28,4 @@ const handler = () => {
 
 
 
-module.exports = () => handler;
+module.exports = handler;

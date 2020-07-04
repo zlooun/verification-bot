@@ -10,4 +10,4 @@ const handler = () => {
 
 
 
-module. exports = () => handler;
+module. exports = handler;
