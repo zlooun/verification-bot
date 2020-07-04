@@ -14,15 +14,18 @@ global.path = path;
 const mongoModels = require('./mongoModels');
 const configs = require('./configs');
 const routes = require('./routes');
+const handler = require('./handler');
 
 
-//global.listStatus = listStatus();
 global.configs = configs();
 global.mongoModels = mongoModels;
-global.winston = winston; 
+global.winston = winston;
+global.handler = handler();
 
 global.redis = new Redis(global.configs.connectInternal().redis()[0].to());
+
 global.winston.configure(global.configs.winston());
+global.handler.setIntervalForWinstonsConfigs();
 
 
 const dirname = path.relative(process.cwd(), __dirname);
@@ -46,7 +49,7 @@ app.use("/", routes);
 mongoose.connection.on("open", (err) => {
 
   if (err) {
-    winston.info(`${log} ${err}`);
+    winston.error(`${log} ${err}`);
     return;
   }
 

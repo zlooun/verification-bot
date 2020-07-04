@@ -13,7 +13,7 @@ const handler = (req, res) => {
 
   if (!notification) {
     res.send("Notification is empty");
-    winston.info(`${log} Уведомление пустое.`);
+    winston.warn(`${log} Уведомление пустое.`);
     return;
   }
 
@@ -21,7 +21,7 @@ const handler = (req, res) => {
 
 
   winston.info(`${log} Сохраняем запрос.`);
-  saveRequest(JSON.parse(notification)).catch((err) => winston.info(`${log} ${err}.`));
+  saveRequest(JSON.parse(notification)).catch((err) => winston.error(`${log} ${err}.`));
 
   winston.info(`${log} Отправляем уведомление через pub/sub.`);
   global.redis.publish("notification", notification);
