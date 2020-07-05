@@ -2,7 +2,7 @@
 
 
 
-const Markup = require('telegraf/markup');
+const keyboards = global.keyboards;
 const Scene = require('telegraf/scenes/base');
 
 const dirname = path.relative(process.cwd(), __dirname);
@@ -18,12 +18,18 @@ const handler = () => {
     .then((session) => {
 
       if (Object.keys(session).length) {
+
+        ctx.notifications = session.notifications;
+
         winston.info(`${log} - - Пользователь авторизирован.`);
+
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         global.listAnswer.isAuthenticated()
-        .then((str) => ctx.reply(str, {reply_markup: {remove_keyboard: true}}));
+        .then((str) => ctx.reply(str, ctx.notifications ? keyboards.turnOff : keyboards.turnOn));
+
         winston.info(`${log} - - Покидаем сцену.`);
         ctx.scene.leave();
+
         return;
       }
 
@@ -40,7 +46,7 @@ const handler = () => {
     winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
-    ctx.reply("Прощай(", {reply_markup: {remove_keyboard: true}});
+    ctx.reply("Прощай(", keyboards.authorization);
     winston.info(`${log} - - Покидаем сцену.`);
     ctx.scene.leave();
     
@@ -50,7 +56,7 @@ const handler = () => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
-    ctx.reply("Ну ладно)", {reply_markup: {remove_keyboard: true}});
+    ctx.reply("Ну ладно)", keyboards.turnOff);
     ctx.scene.leave();
 
     global.mongoModels.User.findOne({"idUserTelegram": ctx.from.id})
@@ -69,16 +75,11 @@ const handler = () => {
 
   authorization.on('message', (ctx) => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
-    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
+    winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}. Неизвестная команда.`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply(`Я тебя не знаю:(
-Попробуй еще раз, или введи "Хватит".`, Markup
-      .keyboard(['⛔ Хватит'])
-      .oneTime()
-      .resize()
-      .extra()
-    );
+Попробуй еще раз, или введи "Хватит".`, keyboards.enough);
   });
 
   return authorization;

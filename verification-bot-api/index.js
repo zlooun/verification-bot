@@ -25,6 +25,7 @@ const listAnswer = require("./listAnswer");
 const session = require("./session");
 const stage = require("./stage");
 const subscribe = require("./subscribe");
+const keyboards = require("./keyboards");
 
 const telegram = new Telegram(global.process.env.tokenVerificationBot);
 const bot = new Telegraf(global.process.env.tokenVerificationBot);
@@ -40,6 +41,7 @@ global.session = session();
 global.winston = winston;
 global.telegram = telegram;
 global.handler = handler();
+global.keyboards = keyboards();
 
 
 global.winston.configure(global.configs.winston());

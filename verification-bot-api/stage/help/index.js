@@ -2,7 +2,7 @@
 
 
 
-const Markup = require('telegraf/markup');
+const keyboards = global.keyboards;
 const Scene = require('telegraf/scenes/base');
 
 const dirname = path.relative(process.cwd(), __dirname);
@@ -22,12 +22,7 @@ const handler = () => {
 
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         global.listAnswer.help(ctx.from, session.isAuthenticated)
-        .then((answer) => ctx.reply(answer, Markup
-          .keyboard(['🌚 Авторизоваться'])
-          .oneTime()
-          .resize()
-          .extra()
-        ));
+        .then((answer) => ctx.reply(answer, keyboards.authorization));
 
         return;
       }
@@ -35,14 +30,7 @@ const handler = () => {
 
       winston.info(`${log} - - Отправляем ответ пользователю.`);
       global.listAnswer.help(ctx.from, session.isAuthenticated)
-      .then((answer) => ctx.reply(answer, Markup
-        .keyboard([['👍 Включить уведомления'],
-                   ['👎 Выключить уведомления'],
-                   ['👌 Понял']])
-        .oneTime()
-        .resize()
-        .extra()
-      ));
+      .then((answer) => ctx.reply(answer, session.notifications ? keyboards.turnOff : keyboards.turnOn));
 
     });
 
@@ -80,17 +68,6 @@ const handler = () => {
     ctx.scene.leave();
     
   });
-
-  help.hears(/^(👌 )?Понял$/gi, (ctx) => {
-    const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
-    winston.info(`${log} - - Пользователь ввел "Понял".`);
-
-    winston.info(`${log} - - Отправляем ответ пользователю.`);
-    ctx.reply(`Хорошо)`, {reply_markup: {remove_keyboard: true}});
-    winston.info(`${log} - - Покидаем сцену.`);
-    ctx.scene.leave();
-    
-  }); 
 
   help.on('message', (ctx, next) => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;

@@ -2,7 +2,7 @@
 
 
 
-const Markup = require('telegraf/markup');
+const keyboards = global.keyboards;
 const Scene = require('telegraf/scenes/base');
 
 const dirname = path.relative(process.cwd(), __dirname);
@@ -15,12 +15,7 @@ const handler = () => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
-    ctx.reply("Неизвестная команда, напиши /help, чтобы посмотреть какими командами ты можешь пользоваться.", Markup
-      .keyboard(['💡 Помощь'])
-      .oneTime()
-      .resize()
-      .extra()
-    );
+    ctx.reply("Неизвестная команда, напиши /help, чтобы посмотреть какими командами ты можешь пользоваться.", keyboards.help);
 
   });
 

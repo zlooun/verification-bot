@@ -18,12 +18,12 @@ const handler = (ctx) => {
 
       if (!Object.keys(session).length) {
         const str = `Привет ${ from.first_name} ${ from.last_name }! Я тебя уже знаю, но ты не авторизовался. Введи /authorization, для того, чтобы это исправить.`;
-        resolve(str, false);
+        resolve({ str, isAuth: false });
         return;
       }
 
       const str = `Привет ${ from.first_name} ${ from.last_name }! Я тебя уже знаю, и ты авторизован. Введи /help, чтобы посмотреть, что ты можешь сделать.`;
-      resolve(str, true);
+      resolve({ str, isAuth: true });
     }, (err) => winston.error(`${log} - - ${err}`));
 
   })

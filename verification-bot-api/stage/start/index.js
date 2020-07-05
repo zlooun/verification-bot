@@ -2,7 +2,7 @@
 
 
 
-const Markup = require('telegraf/markup');
+const keyboards = global.keyboards;
 const Scene = require('telegraf/scenes/base');
 
 const dirname = path.relative(process.cwd(), __dirname);
@@ -29,12 +29,7 @@ const handler = () => {
   
         winston.info(`${log} - - Отправляем ответ пользователю.`);
         global.listAnswer.notExistUser(ctx.from)
-        .then((answer) => ctx.reply(answer, Markup
-          .keyboard(['🌚 Авторизоваться'])
-          .oneTime()
-          .resize()
-          .extra()
-        ));
+        .then((answer) => ctx.reply(answer, keyboards.authorization));
         
         return;
       }
@@ -43,20 +38,15 @@ const handler = () => {
   
       winston.info(`${log} - - Отправляем ответ пользователю.`);
       global.listAnswer.existUser(ctx)  
-      .then((answer, isAuth) => {
+      .then((answer) => {
 
-        if (!isAuth){
-          ctx.reply(answer, Markup
-            .keyboard(['🌚 Авторизоваться'])
-            .oneTime()
-            .resize()
-            .extra()
-          );
+        if (!answer.isAuth){
+          ctx.reply(answer.str, keyboards.authorization);
 
           return;
         }
 
-        ctx.reply(answer, {reply_markup: {remove_keyboard: true}});
+        ctx.reply(answer.str, doc.notifications ? keyboards.turnOff : keyboards.turnOn);
         winston.info(`${log} - - Покидаем сцену.`);
         ctx.scene.leave();
       });
