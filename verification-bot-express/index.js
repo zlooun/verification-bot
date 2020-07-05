@@ -3,6 +3,9 @@
 
 
 
+require("./.env")();
+
+
 const app = require('express')();
 const mongoose = require('mongoose');
 const Redis = require('ioredis');
@@ -15,6 +18,7 @@ const mongoModels = require('./mongoModels');
 const configs = require('./configs');
 const routes = require('./routes');
 const handler = require('./handler');
+const subscribe = require("./subscribe");
 
 
 global.configs = configs();
@@ -23,6 +27,7 @@ global.winston = winston;
 global.handler = handler();
 
 global.redis = new Redis(global.configs.connectInternal().redis()[0].to());
+const sub = new Redis(global.configs.connectInternal().redis()[0].to());
 
 global.winston.configure(global.configs.winston());
 global.handler.setIntervalForWinstonsConfigs();
@@ -30,6 +35,18 @@ global.handler.setIntervalForWinstonsConfigs();
 
 const dirname = path.relative(process.cwd(), __dirname);
 const log = `[EXPRESS][SYSTEM] - - [${dirname}] - -`;
+
+
+sub.subscribe("recipient", (err) => {
+
+  if (err) {
+    winston.error(`${log} - - ${err}`);
+    return;
+  }
+
+  sub.on("message", subscribe);
+
+});
 
 
 mongoose.connect(global.configs.connectInternal().mongo()[0].to(), { "useNewUrlParser": true, "useFindAndModify": false, "useUnifiedTopology": true });

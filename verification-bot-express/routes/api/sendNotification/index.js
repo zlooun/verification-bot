@@ -10,7 +10,7 @@ const handler = (req, res) => {
   const log = `[EXPRESS][${req.ip}] - - [${req.originalUrl}] - -`;
 
   let notification = req.body.notification;
-
+  console.log(notification);
   if (!notification) {
     res.send("Notification is empty");
     winston.warn(`${log} Уведомление пустое.`);
@@ -21,14 +21,17 @@ const handler = (req, res) => {
 
 
   winston.info(`${log} Сохраняем запрос.`);
-  saveRequest(JSON.parse(notification)).catch((err) => winston.error(`${log} ${err}.`));
+  saveRequest(notification)
+  .then((savedRequest) => {
 
-  winston.info(`${log} Отправляем уведомление через pub/sub.`);
-  global.redis.publish("notification", notification);
+    winston.info(`${log} Отправляем уведомление через pub/sub.`);
+    global.redis.publish("notification", JSON.stringify(savedRequest));
+
+  }, (err) => winston.error(`${log} ${err}.`));
 
 };
 
 
 
 
-module. exports = handler;
+module.exports = handler;

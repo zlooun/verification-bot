@@ -18,7 +18,9 @@ const handler = (channel, message) => {
 
     const newMessage = `Имя: ${message.name}\n` +
     `Фамилия: ${message.lastname ? message.lastname : "отсутствует"}\n` +
-    `Логин: ${message.login}`;
+    `Логин: ${message.login}\n` + 
+    `Проект: ${message.project}\n` + 
+    `Сервер: ${message.fromServer}`;
 
     global.redis.hgetall("queue")
     .then((queue) => {
@@ -39,6 +41,7 @@ const handler = (channel, message) => {
 
           winston.info(`${log} - - Отправляем уведомление пользователю.`);
           global.telegram.sendMessage(turn[0], newMessage);
+          global.handler.setRecipient(turn[0], message._id);
 
           global.redis.hset("queue", turn[0], false)
           .catch((err) => winston.error(`${log} - - ${err}`));

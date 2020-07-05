@@ -9,6 +9,7 @@ const handler = () => {
     "setAuthenticated": require("./setAuthenticated"),
     "updateUser": require("./updateUser"),
     "setIntervalForWinstonsConfigs": require("./setIntervalForWinstonsConfigs"),
+    "setRecipient": require("./setRecipient"),
   };
 };
 

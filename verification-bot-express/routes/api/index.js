@@ -6,7 +6,7 @@
 const router = require("router")();
 
 
-router.use("/sendNotification", require("./sendNotification"));
+router.use("/sendNotification", require("./middleware"), require("./sendNotification"));
 
 
 

@@ -1,0 +1,74 @@
+version: "3.5"
+
+
+
+
+services:
+
+  verification-bot-express:
+    depends_on:
+      - verification-bot-redis
+      - verification-bot-mongo
+    image: verification-bot-express
+    container_name: verification-bot-express
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:8081:3000
+    volumes:
+      - /data/logs/verification-bot:/www/verification-bot-express/logs
+    networks:
+      - verification-bot
+      - verification-bot-api-proxy
+
+
+  verification-bot-api:
+    depends_on:
+      - verification-bot-redis
+      - verification-bot-mongo
+    image: verification-bot-api
+    container_name: verification-bot-api
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:8080:3000
+    volumes:
+      - /data/logs/verification-bot:/www/verification-bot-api/logs
+    networks:
+      - verification-bot
+      - verification-bot-api-proxy
+
+
+  verification-bot-redis:
+    image: redis
+    container_name: verification-bot-redis
+    restart: unless-stopped
+    ports:
+      - 127.0.0.212:6379:6379
+    volumes:
+      - /data/databases/redis/verification-bot:/data
+    networks:
+      - verification-bot-api-proxy
+      - verification-bot
+
+
+  verification-bot-mongo:
+    image: mongo
+    container_name: verification-bot-mongo
+    restart: unless-stopped
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=****
+#      - MONGO_INITDB_ROOT_PASSWORD=****
+    ports:
+      - 127.0.0.212:27017:27017
+    volumes:
+      - /data/databases/mongo/verification-bot:/data/db
+    networks:
+      - verification-bot-api-proxy
+      - verification-bot
+
+
+networks:
+  verification-bot:
+    driver: bridge
+  verification-bot-api-proxy:
+    external:
+      name: verification-bot-api-proxy

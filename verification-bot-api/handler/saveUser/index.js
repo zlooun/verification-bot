@@ -16,7 +16,7 @@ const handler = (ctx) => {
   const from = ctx.from;
   const createDate = Date.now();
   const uuid = uuidV1();
-  const salt = crypto.createHash("sha512").update(from. id + uuid + createDate + Math. random ()).digest("hex");
+  const salt = crypto.createHash("sha512").update(from.id + uuid + createDate + Math.random()).digest("hex");
 
 
   const saveObj = {

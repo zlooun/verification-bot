@@ -7,3 +7,6 @@ logs
 databases
 verification-bot-api/test.js
 verification-bot-api.txt
+docker-compose.yml
+verification-bot-express/test.js
+tasks.txt

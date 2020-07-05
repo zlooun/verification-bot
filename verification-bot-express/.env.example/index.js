@@ -4,7 +4,7 @@
 const env = {
   "NODE_ENV": "development",
   "TYPE_ENV": "docker",
-  "tokenVerificationBot": ""
+  "API_KEY": "",
 };
 
 
