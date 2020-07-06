@@ -1,0 +1,14 @@
+verification-bot-api/node_modules
+verification-bot-express/node_modules
+certificates
+.idea/
+verification-bot-api/test.js
+verification-bot-api.txt
+docker-compose.yml
+example.docker-compose.yml
+.dockerignore
+verification-bot-express/test.js
+tasks.txt
+*.sh
+.env.example
+Dockerfile
