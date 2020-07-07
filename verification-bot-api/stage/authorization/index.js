@@ -52,11 +52,11 @@ const handler = () => {
     
   }); 
 
-  authorization.hears(/^Пусти$/gi, (ctx) => {
+  authorization.hears(/^8z6Fp3$/g, (ctx) => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
     winston.info(`${log} - - Пользователь ввел ${ctx.update.message.text}.`);
 
-    ctx.reply("Ну ладно)", keyboards.turnOff);
+    ctx.reply("Вы авторизированы.", keyboards.turnOff);
     ctx.scene.leave();
 
     global.mongoModels.User.findOne({"idUserTelegram": ctx.from.id})

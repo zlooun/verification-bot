@@ -14,7 +14,6 @@ const handler = (ctx) => {
 
 
   const updateObj = {
-    "idChatTelegram": ctx.chat.id,
     "name": from.first_name,
     "lastname": from.last_name,
     "login": from.username,
@@ -31,6 +30,9 @@ const handler = (ctx) => {
       return;
     }
 
+    global.session.set(ctx.sessionKey, updatedUser)
+    .catch((err) => winston.error(`${log} - - ${err}`));
+    
   }, (err) => winston.error(`${log} - - ${err}`));
 
 };

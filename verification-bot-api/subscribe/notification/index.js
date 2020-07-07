@@ -16,10 +16,11 @@ const handler = (channel, message) => {
 
     message = JSON.parse(message);
 
-    const newMessage = `Имя: ${message.name}\n` +
+    const newMessage = `Следующий клиент ожидает верификацию:\n` +
+    `Имя: ${message.name}\n` +
     `Фамилия: ${message.lastname ? message.lastname : "отсутствует"}\n` +
     `Логин: ${message.login}\n` + 
-    `Проект: ${message.project}\n` + 
+    `Проект: ${message.project}\n` +
     `Сервер: ${message.fromServer}`;
 
     global.redis.hgetall("queue")
