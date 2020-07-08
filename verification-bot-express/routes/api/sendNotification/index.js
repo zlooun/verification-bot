@@ -10,12 +10,6 @@ const handler = (req, res) => {
   const log = `[EXPRESS][${req.ip}] - - [${req.originalUrl}] - -`;
 
   let notification = req.body.notification;
-  console.log(notification);
-  if (!notification) {
-    res.send("Notification is empty");
-    winston.warn(`${log} Уведомление пустое.`);
-    return;
-  }
 
   res.send("Success");
 
@@ -24,8 +18,16 @@ const handler = (req, res) => {
   saveRequest(notification)
   .then((savedRequest) => {
 
+    try {
+      notification = JSON.stringify(savedRequest);
+    } catch (err) {
+      winston.error(`${log} ${err}.`);
+      res.send("Can't stringify.");
+      return;
+    }
+
     winston.info(`${log} Отправляем уведомление через pub/sub.`);
-    global.redis.publish("notification", JSON.stringify(savedRequest));
+    global.redis.publish("notification", notification);
 
   }, (err) => winston.error(`${log} ${err}.`));
 

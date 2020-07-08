@@ -9,6 +9,15 @@ const apiKey = global.process.env.API_KEY;
 const handler = (req, res, next) => {
   const log = `[EXPRESS][${req.ip}] - - [${req.originalUrl}] - -`;
 
+  const notification = req.body.notification;
+
+  if (!notification){
+    winston.warn(`${log} Пустое уведомление.`);
+    res.send("Notification is empty");
+    return;
+  }
+
+  
   const receivedApiKey = req.body.notification.apiKey;
 
   if (apiKey === receivedApiKey) {

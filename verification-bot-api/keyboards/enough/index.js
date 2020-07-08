@@ -6,7 +6,6 @@
 const handler = (Markup) => {
   return Markup
   .keyboard(['⛔ Хватит'])
-  .oneTime()
   .resize()
   .extra();
 };
