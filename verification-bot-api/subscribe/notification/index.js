@@ -9,8 +9,6 @@ const dirname = path.relative(process.cwd(), __dirname);
 const handler = (channel, message) => {
   const log = `[BOT][EXPRESS] - - [${dirname}]`;
 
-  console.log(message);
-
   if (channel === "notification") {
     winston.info(`${log} - - Бот получил запрос на отправку уведомления.`);
 
