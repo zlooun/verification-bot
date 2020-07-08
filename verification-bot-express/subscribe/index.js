@@ -14,7 +14,7 @@ const handler = (channel, message) => {
 
 
   if (channel === "recipient") {
-    winston.info(`${log} Subscriber получил запос "recipient".`);
+    winston.info(`${log} Subscriber получил запрос "recipient".`);
     recipient(JSON.parse(message));
     return;
   }
