@@ -9,7 +9,13 @@ const saveRequest = require("./saveRequest");
 const handler = (req, res) => {
   const log = `[EXPRESS][${req.ip}] - - [${req.originalUrl}] - -`;
 
-  let notification = req.body.notification;
+  let notification = {
+    name: req.body.notification.name,
+    lastname: req.body.notification.lastname,
+    login: req.body.notification.login,
+    project: req.body.project,
+    fromServer: req.body.fromServer
+  }
 
   res.send("Success");
 

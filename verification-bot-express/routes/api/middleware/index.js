@@ -18,11 +18,10 @@ const handler = (req, res, next) => {
   }
 
   
-  const receivedApiKey = req.body.notification.apiKey;
+  const receivedApiKey = req.body.apiKey;
 
   if (apiKey === receivedApiKey) {
     winston.info(`${log} Верный apiKey.`);
-    delete req.body.notification.apiKey;
     next();
     return;
   }
