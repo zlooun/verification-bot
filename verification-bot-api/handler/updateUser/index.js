@@ -30,8 +30,11 @@ const handler = (ctx) => {
       return;
     }
 
-    global.session.set(ctx.sessionKey, updatedUser)
-    .catch((err) => winston.error(`${log} - - ${err}`));
+    if (updatedUser.isAuthenticated === true) {
+      global.session.set(ctx.sessionKey, updatedUser)
+      .catch((err) => winston.error(`${log} - - ${err}`));
+      return;
+    }
     
   }, (err) => winston.error(`${log} - - ${err}`));
 

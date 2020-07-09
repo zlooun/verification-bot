@@ -7,7 +7,7 @@ const handler = (key) => {
 
   return new Promise((resolve, reject) => {
 
-    global.redis.get(key, (err, json) => {
+    global.redis.del(key, (err, json) => {
 
       if (err) {
         return reject(err)
