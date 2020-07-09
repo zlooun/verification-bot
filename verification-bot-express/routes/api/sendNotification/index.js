@@ -14,7 +14,8 @@ const handler = (req, res) => {
     lastname: req.body.notification.lastname,
     login: req.body.notification.login,
     project: req.body.project,
-    fromServer: req.body.fromServer
+    fromServer: req.body.fromServer,
+    link: req.body.notification.link
   }
 
   res.send("Success");

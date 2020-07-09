@@ -13,13 +13,14 @@ const handler = (channel, message) => {
     winston.info(`${log} - - Бот получил запрос на отправку уведомления.`);
 
     message = JSON.parse(message);
-
+    
     const newMessage = `Следующий клиент ожидает верификацию:\n` +
-    `Имя: ${message.name}\n` +
-    `Фамилия: ${message.lastname ? message.lastname : "отсутствует"}\n` +
-    `Логин: ${message.login}\n` + 
-    `Проект: ${message.project}\n` +
-    `Сервер: ${message.fromServer}`;
+    `${message.name ? `Имя: ${message.name}\n` : ""}` +
+    `${message.lastname ? `Фамилия: ${message.lastname}\n` : ""}` +
+    `${message.login ? `Логин: ${message.login}\n` : ""}` +
+    `${message.project ? `Проект: ${message.project}\n` : ""}` +
+    `${message.fromServer ? `Сервер: ${message.fromServer}\n` : ""}` +
+    `${message.link ? `Ссылка: ${message.link}\n` : ""}`;
 
     global.redis.hgetall("queue")
     .then((queue) => {

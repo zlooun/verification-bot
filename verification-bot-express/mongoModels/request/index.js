@@ -15,7 +15,8 @@ const obj = new Schema ({
   "createDate": Date,
   "project": String,
   "fromServer": String,
-  "idRecipient": String
+  "idRecipient": String,
+  "link": String
 });
 
 
