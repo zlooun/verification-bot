@@ -167,7 +167,7 @@ const handler = () => {
 
   turnOffNotifications.on('message', (ctx) => {
     const log = `[BOT][${ctx.from.id}] - - [${dirname}]`;
-    winston.info(`${log} - - Пользователь ввел "${ctx.update.message.text}", (неизвестная команда).`);
+    winston.info(`${log} - - Пользователь ввел неизвестную команду.`);
 
     winston.info(`${log} - - Отправляем ответ пользователю.`);
     ctx.reply(`Я вас не понимаю. Введите "Да" или "Нет".`, keyboards.yesNo);
